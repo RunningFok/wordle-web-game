@@ -1,4 +1,5 @@
 import React from 'react';
+import { GameControl } from './GameControl';
 import { GameState } from '../types/core';
 
 interface GamePageProps {
@@ -24,6 +25,12 @@ export const GamePage: React.FC<GamePageProps> = ({
             </div>
           </div>
         </header>
+        <main className="game-container">
+            <GameControl
+                gameState={gameState}
+                onNewGame={onNewGame}
+            />
+        </main>
       </div>
     );
   };

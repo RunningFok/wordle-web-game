@@ -109,3 +109,54 @@
   font-weight: bold;
 }
 
+.game-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.game-controls {
+  margin: 20px 0;
+}
+
+.game-controls button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.game-controls button:hover {
+  background-color: #4fa8c5;
+}
+
+.game-status {
+  margin: 20px 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.game-status button{
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.game-status.won {
+  color: #538d4e;
+}
+
+.game-status.lost {
+  color: #ff6b6b;
+}
