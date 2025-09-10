@@ -1,17 +1,23 @@
 import React from 'react';
 
-export const Home = () => {
+interface HomePageProps {
+  onStartGame: (mode: 'classic' | 'custom') => void;
+}
+
+export const Home: React.FC<HomePageProps> = ({
+  onStartGame,
+}) => {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Wordle!</h1>
+          <div className="App-title">Wordle!</div>
         </header>
         <main className="homepage-container">
             <div className="game-cards">
               <div className="game-card classic-card">
                 <button 
                   className="game-button classic-button"
-                  onClick={() => {}}
+                  onClick={() => onStartGame('classic')}
                 >
                   Classic Mode
                 </button>
@@ -19,7 +25,7 @@ export const Home = () => {
               <div className="game-card custom-card">
                 <button 
                   className="game-button custom-button"
-                  onClick={() => {}}
+                  onClick={() => onStartGame('custom')}
                 >
                   Custom Mode
                 </button>

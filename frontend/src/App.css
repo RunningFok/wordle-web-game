@@ -11,9 +11,11 @@
   color: white;
 }
 
-.App-header h1 {
-  margin: 0 0 20px 0;
-  font-size: 2.5rem;
+.App-title {
+  padding: 35px 16px;
+  border-radius: 6px;
+  font-size: 3rem;
+  color: #ffffff;
   font-weight: bold;
 }
 
@@ -72,5 +74,38 @@
 .custom-button {
   background-color: #A7E399;
   color: #ffffff;
+}
+
+.game-header {
+  position: relative;
+  padding-top: 30px;
+  padding: 15px;
+}
+
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 0px;
+  padding: 8px 12px;
+  background-color: #48B3AF;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.back-button:hover {
+  background-color: #48B3AF;
+}
+
+.mode-indicator {
+  padding: 20px 16px;
+  border-radius: 6px;
+  font-size: 3rem;
+  color: #ffffff;
+  font-weight: bold;
 }
 
