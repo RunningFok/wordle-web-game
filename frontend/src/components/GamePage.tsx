@@ -1,6 +1,7 @@
 import React from 'react';
 import { GameControl } from './GameControl';
 import { GameState } from '../types/core';
+import { GameBoard } from './GameBoard';
 
 interface GamePageProps {
     gameState: GameState;
@@ -29,6 +30,9 @@ export const GamePage: React.FC<GamePageProps> = ({
             <GameControl
                 gameState={gameState}
                 onNewGame={onNewGame}
+            />
+            <GameBoard
+                gameState={gameState}
             />
         </main>
       </div>

@@ -160,3 +160,74 @@
 .game-status.lost {
   color: #ff6b6b;
 }
+
+.game-board {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 20px 0;
+}
+
+.guess-row {
+  display: flex;
+  gap: 1px;
+  justify-content: center;
+  align-items: center;
+}
+
+.letter-tile {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #3a3a3c;
+  background-color: #ffffff;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.letter-tile.correct {
+  background-color: #538d4e;
+  border-color: #538d4e;
+}
+
+.letter-tile.wrong-position {
+  background-color: #b59f3b;
+  border-color: #b59f3b;
+}
+
+.letter-tile.incorrect {
+  background-color: #3a3a3c;
+  border-color: #3a3a3c;
+}
+
+.letter-tile.current {
+  border-color: #565758;
+}
+
+.keyboard {
+  margin-top: 30px;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin: 6px 0;
+}
+
+.keyboard-key {
+  padding: 12px 8px;
+  background-color: #818384;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 40px;
+}
