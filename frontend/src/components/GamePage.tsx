@@ -1,14 +1,14 @@
 import React from 'react';
+import { GameState } from '../types/core';
 
 interface GamePageProps {
-
-    selectedMode: 'classic' | 'custom';
+    gameState: GameState;
     onNewGame: () => void;
     onBackToHome: () => void;
   }
   
 export const GamePage: React.FC<GamePageProps> = ({
-    selectedMode,
+    gameState,
     onNewGame,
     onBackToHome
   }) => {
@@ -20,7 +20,7 @@ export const GamePage: React.FC<GamePageProps> = ({
               Exit
             </button>
             <div className="mode-indicator">
-              {selectedMode === 'classic' ? 'Classic Mode' : 'Custom Mode'}
+              {gameState.mode === 'classic' ? 'Classic Mode' : 'Custom Mode'}
             </div>
           </div>
         </header>

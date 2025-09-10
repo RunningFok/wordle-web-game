@@ -2,25 +2,38 @@ import React, { useState } from 'react';
 import './App.css';
 import { Home } from './components/Home';
 import { GamePage } from './components/GamePage';
+import { GameState } from './types/core';
+
+const DEFAULT_GAME_STATE: GameState = {
+  currentGuessWord: '',
+  tries: [],
+  gameStatus: 'playing',
+  targetWord: 'HELLO',
+  maxTries: 6,
+  mode: 'classic'
+};
 
 function App() {
-  const [selectedMode, setSelectedMode] = useState<'classic' | 'custom'>('classic');
+  const [gameState, setGameState] = useState<GameState>(DEFAULT_GAME_STATE);
   const [showGame, setShowGame] = useState<boolean>(false);
 
   const goBackToHome = async () => {
     setShowGame(false);
   };
 
-  const startNewGame = (version: 'classic' | 'custom') => {    
-    setSelectedMode(version);
+  const startNewGame = (gameMode: 'classic' | 'custom') => {    
+    setGameState({
+      ...DEFAULT_GAME_STATE,
+      mode: gameMode
+    });
     setShowGame(true);
     };
 
   if (showGame) {
     return (
       <GamePage
-        selectedMode={selectedMode}
-        onNewGame={() => startNewGame(selectedMode)}
+        gameState={gameState}
+        onNewGame={() => startNewGame(gameState.mode)}
         onBackToHome={goBackToHome}
       />
     );
