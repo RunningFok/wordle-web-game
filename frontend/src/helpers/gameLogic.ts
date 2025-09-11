@@ -1,4 +1,5 @@
 import { LetterResult } from "../types/core";
+import { WORD_LIST } from "../data/wordList";
 
 export const evaluateGuessLocal = (guess: string, target: string): LetterResult[] => {
   const results: LetterResult[] = [];
@@ -36,4 +37,13 @@ export const evaluateGuessLocal = (guess: string, target: string): LetterResult[
     }
   }
   return results;
+};
+
+export const getRandomWord = (): string => {
+  const randomIndex = Math.floor(Math.random() * WORD_LIST.length);
+  return WORD_LIST[randomIndex];
+};
+
+export const isWordInList = (word: string): boolean => {
+  return WORD_LIST.includes(word);
 };

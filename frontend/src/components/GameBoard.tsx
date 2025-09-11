@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { GameKeyboard } from './GameKeyboard';
 import { GameState, GuessResult, LetterResult } from '../types/core';
-import { evaluateGuessLocal } from '../helpers/gameAnalysis';
+import { evaluateGuessLocal, isWordInList } from '../helpers/gameLogic';
 
 interface GameBoardProps {
   gameState: GameState;

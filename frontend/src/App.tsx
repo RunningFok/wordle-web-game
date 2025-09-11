@@ -3,12 +3,13 @@ import './App.css';
 import { Home } from './components/Home';
 import { GamePage } from './components/GamePage';
 import { GameState } from './types/core';
+import { getRandomWord } from './helpers/gameLogic';
 
 const DEFAULT_GAME_STATE: GameState = {
   currentGuessWord: '',
   tries: [],
   gameStatus: 'playing',
-  targetWord: 'HELLO',
+  targetWord: getRandomWord(),
   maxTries: 6,
   mode: 'classic'
 };
@@ -24,10 +25,11 @@ function App() {
   const startNewGame = (gameMode: 'classic' | 'custom') => {    
     setGameState({
       ...DEFAULT_GAME_STATE,
+      targetWord: getRandomWord(),
       mode: gameMode
     });
     setShowGame(true);
-    };
+  };
 
   if (showGame) {
     return (
