@@ -14,7 +14,7 @@
   padding: 35px 16px;
   border-radius: 6px;
   font-size: 3rem;
-  color: #ffffff;
+  color: #FFFFFF;
   font-weight: bold;
 }
 
@@ -67,12 +67,12 @@
 
 .classic-button {
   background-color: #48B3AF;
-  color: #282c34;
+  color: #282C34;
 }
 
 .custom-button {
   background-color: #A7E399;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .game-header {
@@ -111,7 +111,7 @@
   top: 10px;
   left: 0px;
   padding: 8px 12px;
-  background-color: #48B3AF;
+  background-color: #E74C3C;
   color: white;
   font-weight: bold;
   text-align: center;
@@ -172,8 +172,8 @@
 .game-controls button {
   padding: 12px 24px;
   font-size: 1rem;
-  background-color: #61dafb;
-  color: #282c34;
+  background-color: #61DAFB;
+  color: #282C34;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -182,7 +182,7 @@
 }
 
 .game-controls button:hover {
-  background-color: #4fa8c5;
+  background-color: #4FA8C5;
 }
 
 .game-status {
@@ -204,11 +204,11 @@
 }
 
 .game-status.won {
-  color: #538d4e;
+  color: #538D4E;
 }
 
 .game-status.lost {
-  color: #ff6b6b;
+  color: #FF6B6B;
 }
 
 .game-board {
@@ -242,18 +242,18 @@
 }
 
 .letter-tile.correct {
-  background-color: #538d4e;
-  border-color: #538d4e;
+  background-color: #538D4E;
+  border-color: #538D4E;
 }
 
 .letter-tile.wrong-position {
-  background-color: #b59f3b;
-  border-color: #b59f3b;
+  background-color: #B59F3B;
+  border-color: #B59F3B;
 }
 
 .letter-tile.incorrect {
-  background-color: #3a3a3c;
-  border-color: #3a3a3c;
+  background-color: #3A3A3C;
+  border-color: #3A3A3C;
 }
 
 .letter-tile.current {
@@ -263,7 +263,7 @@
 
 @keyframes pulse {
   0% { border-color: #565758; }
-  50% { border-color: #61dafb; }
+  50% { border-color: #61DAFB; }
   100% { border-color: #565758; }
 }
 
@@ -344,7 +344,7 @@
 }
 
 .invalid-word-modal-content {
-  background-color: #fff;
+  background-color: #FFF;
   border: 3px solid #333;
   border-radius: 20px;
   padding: 15px 20px;
@@ -509,15 +509,15 @@
 }
 
 .play-again-button:hover {
-  background-color: #3a9b97;
+  background-color: #3A9B97;
 }
 
 .back-to-home-button {
-  background-color: #e74c3c;
+  background-color: #E74C3C;
 }
 
 .back-to-home-button:hover {
-  background-color: #c0392b;
+  background-color: #C0392B;
 }
 
 @keyframes fadeIn {
