@@ -20,19 +20,20 @@ export const GamePage: React.FC<GamePageProps> = ({
       <div className="App">
         <header className="App-header">
           <div className="game-header">
-            <button className="back-button" onClick={onBackToHome}>
-              Exit
-            </button>
             <div className="mode-indicator">
               {gameState.mode === 'classic' ? 'Classic Mode' : 'Custom Mode'}
+            </div>
+            <div className="game-header-buttons">
+              <button className="back-button" onClick={onBackToHome}>
+                Exit
+              </button>
+              <button className="new-game-button" onClick={onNewGame}>
+                {gameState.gameStatus === 'playing' ? 'New Game' : 'Play Again'}
+              </button>
             </div>
           </div>
         </header>
         <main className="game-container">
-            <GameControl
-                gameState={gameState}
-                onNewGame={onNewGame}
-            />
             <GameBoard
                 gameState={gameState}
                 setGameState={setGameState}

@@ -6,8 +6,7 @@
 }
 
 .App-header {
-  background-color: #476EAE;
-  padding: 20px;
+  padding: 10px;
   color: white;
 }
 
@@ -77,13 +76,38 @@
 }
 
 .game-header {
-  position: relative;
-  padding-top: 30px;
-  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .game-container {
+    position: relative;
+  }
+  
+  .game-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    max-width: 800px;
+    margin: 35px auto;
+  }
+}
+
+.game-header-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .back-button {
-  position: absolute;
   top: 10px;
   left: 0px;
   padding: 8px 12px;
@@ -95,24 +119,50 @@
   border-radius: 10px;
   cursor: pointer;
   font-size: 1.5rem;
+  width: 150px;
 }
 
 .back-button:hover {
+  background-color: #C0392B;
+}
+
+.new-game-button {
+  top: 10px;
+  left: 0px;
+  padding: 8px 12px;
+  background-color: #48B3AF;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  width: 150px;
+}
+
+.new-game-button:hover {
   background-color: #48B3AF;
 }
 
 .mode-indicator {
-  padding: 20px 16px;
+  padding: 10px 8px;
   border-radius: 6px;
-  font-size: 3rem;
-  color: #ffffff;
+  font-size: 2rem;
+  color: #FFFFFF;
   font-weight: bold;
 }
 
 .game-container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
+}
+
+@media (max-width: 767px) {
+  .game-container {
+    position: relative;
+  }
 }
 
 .game-controls {
@@ -177,10 +227,10 @@
 }
 
 .letter-tile {
-  width: 60px;
-  height: 60px;
-  border: 2px solid #3a3a3c;
-  background-color: #ffffff;
+  width: 50px;
+  height: 50px;
+  border: 2px solid #3A3A3C;
+  background-color: #FFFFFF;
   color: black;
   font-size: 1.5rem;
   font-weight: bold;
