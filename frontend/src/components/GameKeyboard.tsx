@@ -47,7 +47,7 @@ export const GameKeyboard: React.FC<GameKeyboardProps> = ({ gameState, onKeyPres
                   className={`keyboard-key ${isSpecialKey ? 'wide' : ''} ${status !== 'unused' ? status : ''}`}
                   onClick={() => onKeyPress(key)}
                 >
-                  {key}
+                  {key === 'BACKSPACE' ? '⌫' : key}
                 </button>
               );
             })}

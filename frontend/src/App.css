@@ -239,3 +239,29 @@
   min-width: 40px;
   transition: all 0.2s ease;
 }
+
+@media (max-width: 767px) {
+  .keyboard {
+    margin-top: 20px;
+    padding: 0 10px;
+  }
+  
+  .keyboard-row {
+    gap: 3px;
+    margin: 4px 0;
+  }
+  
+  .keyboard-key {
+    padding: 8px 4px;
+    font-size: 0.8rem;
+    min-width: 28px;
+    flex: 1;
+    max-width: 35px;
+  }
+  
+  .keyboard-key.wide {
+    flex: 1.5;
+    max-width: 50px;
+  }
+}
+}
