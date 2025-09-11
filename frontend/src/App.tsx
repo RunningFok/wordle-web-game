@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Home } from './components/Home';
 import { GamePage } from './components/GamePage';
+import { GameFinishModal } from './components/PopupModals';
 import { GameState } from './types/core';
 import { getRandomWord } from './helpers/gameLogic';
 
@@ -17,9 +18,19 @@ const DEFAULT_GAME_STATE: GameState = {
 function App() {
   const [gameState, setGameState] = useState<GameState>(DEFAULT_GAME_STATE);
   const [showGame, setShowGame] = useState<boolean>(false);
+  const [showGameFinish, setShowGameFinish] = useState(false);
 
-  const goBackToHome = async () => {
+  useEffect(() => {
+    if (gameState.gameStatus === 'won' || gameState.gameStatus === 'lost') {
+      setShowGameFinish(true);
+    } else {
+      setShowGameFinish(false);
+    }
+  }, [gameState.gameStatus]);
+
+  const goBackToHome = () => {
     setShowGame(false);
+    setShowGameFinish(false);
   };
 
   const startNewGame = (gameMode: 'classic' | 'custom') => {    
@@ -31,19 +42,36 @@ function App() {
     setShowGame(true);
   };
 
-  if (showGame) {
-    return (
-      <GamePage
-        gameState={gameState}
-        setGameState={setGameState}
-        onNewGame={() => startNewGame(gameState.mode)}
-        onBackToHome={goBackToHome}
-      />
-    );
-  }
+  const playAgainGame = () => {
+    setGameState({
+      ...DEFAULT_GAME_STATE,
+      targetWord: getRandomWord(),
+    });
+    setShowGameFinish(false);
+  };
 
   return (
-    <Home onStartGame={startNewGame} />
+    <div>
+      {showGame ? (
+        <GamePage
+          gameState={gameState}
+          setGameState={setGameState}
+          onNewGame={() => startNewGame(gameState.mode)}
+          onBackToHome={goBackToHome}
+        />
+      ) : (
+        <Home onStartGame={startNewGame} />
+      )}
+      
+      <GameFinishModal
+        isOpen={showGameFinish}
+        onClose={() => setShowGameFinish(false)}
+        gameStatus={gameState.gameStatus as 'won' | 'lost'}
+        targetWord={gameState.targetWord}
+        onPlayAgain={playAgainGame}
+        onBackToHome={goBackToHome}
+      />
+    </div>
   );
 }
 

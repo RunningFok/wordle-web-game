@@ -1,7 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { GameKeyboard } from './GameKeyboard';
 import { GameState, GuessResult, LetterResult } from '../types/core';
 import { evaluateGuessLocal, isWordInList } from '../helpers/gameLogic';
+import { InvalidWordModal } from './PopupModals';
 
 interface GameBoardProps {
   gameState: GameState;
@@ -9,9 +10,18 @@ interface GameBoardProps {
 }
   
 export const GameBoard: React.FC<GameBoardProps> = ({ gameState, setGameState }) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [invalidWord, setInvalidWord] = useState('');
+
   const submitGuess = useCallback(async () => {
     if (gameState.currentGuessWord.length !== 5) return;
     if (gameState.gameStatus !== 'playing') return;
+
+    if (!isWordInList(gameState.currentGuessWord.toUpperCase())) {
+      setInvalidWord(gameState.currentGuessWord.toUpperCase());
+      setShowPopup(true);
+      return;
+    }
 
     try {
       let results: LetterResult[];
@@ -109,6 +119,11 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameState, setGameState })
       
   return (
       <div className="game-board">
+        <InvalidWordModal 
+          isOpen={showPopup} 
+          onClose={() => setShowPopup(false)}
+          guessWord={invalidWord}
+        />
         {Array.from({ length: gameState.maxTries }, (_, index) => 
           renderGuessRow(gameState.tries[index] || null, index)
         )}  

@@ -162,6 +162,7 @@
 }
 
 .game-board {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -264,4 +265,227 @@
     max-width: 50px;
   }
 }
+
+.invalid-word-modal {
+  position: absolute;
+  width: 200px;
+  z-index: 1000;
+}
+
+.invalid-word-modal.auto-close {
+  animation: autoCloseSequence 2.5s ease-out forwards;
+}
+
+@media (min-width: 768px) {
+  .invalid-word-modal {
+    top: 40%;
+    left: 80%;
+    transform: translateY(-50%);
+  }
+}
+
+@media (max-width: 767px) {
+  .invalid-word-modal {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    right: auto;
+  }
+}
+
+.invalid-word-modal-content {
+  background-color: #fff;
+  border: 3px solid #333;
+  border-radius: 20px;
+  padding: 15px 20px;
+  max-width: 250px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.invalid-word-modal-content p {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  @keyframes slideInFromLeft {
+    from {
+      transform: translateY(-50%) translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(-50%) translateX(0);
+      opacity: 1;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  @keyframes slideInFromLeft {
+    from {
+      transform: translate(-50%, -50%) translateY(-30px);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, -50%) translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOutToLeft {
+    from {
+      transform: translate(-50%, -50%) translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translate(-50%, -50%) translateY(-30px);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes autoCloseSequence {
+    0% {
+      transform: translate(-50%, -50%) translateY(-30px);
+      opacity: 0;
+    }
+    12% {
+      transform: translate(-50%, -50%) translateY(0);
+      opacity: 1;
+    }
+    80% {
+      transform: translate(-50%, -50%) translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) translateY(-30px);
+      opacity: 0;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  @keyframes slideOutToLeft {
+    from {
+      transform: translateY(-50%) translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-50%) translateX(-100%);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes autoCloseSequence {
+    0% {
+      transform: translateY(-50%) translateX(-100%);
+      opacity: 0;
+    }
+    12% {
+      transform: translateY(-50%) translateX(0);
+      opacity: 1;
+    }
+    80% {
+      transform: translateY(-50%) translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-50%) translateX(-100%);
+      opacity: 0;
+    }
+  }
+}
+
+.game-finish-modal {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.game-finish-modal-content {
+  background-color: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 280px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideInFromBottom 0.3s ease-out;
+}
+
+.game-finish-modal-content h2 {
+  margin: 0 0 15px 0;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.game-finish-modal-content p {
+  margin: 0 0 25px 0;
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.game-finish-modal-button {
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.game-finish-modal-button:hover {
+  transform: translateY(-2px);
+}
+
+.play-again-button {
+  background-color: #48B3AF;
+}
+
+.play-again-button:hover {
+  background-color: #3a9b97;
+}
+
+.back-to-home-button {
+  background-color: #e74c3c;
+}
+
+.back-to-home-button:hover {
+  background-color: #c0392b;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
