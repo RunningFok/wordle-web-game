@@ -33,6 +33,7 @@ function App() {
     return (
       <GamePage
         gameState={gameState}
+        setGameState={setGameState}
         onNewGame={() => startNewGame(gameState.mode)}
         onBackToHome={goBackToHome}
       />

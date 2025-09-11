@@ -1,9 +1,37 @@
-export const GameKeyboard = () => {
+import React from 'react';
+import { GameState } from '../types/core';
+
+interface GameKeyboardProps {
+  gameState: GameState;
+  onKeyPress: (key: string) => void;
+}
+
+export const GameKeyboard: React.FC<GameKeyboardProps> = ({ gameState, onKeyPress }) => {
     const keyboardRows = [
       ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
       ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
       ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACKSPACE']
     ];
+
+    const getKeyStatus = (letter: string): 'correct' | 'wrong-position' | 'incorrect' | 'unused' => {
+        let bestStatus: 'correct' | 'wrong-position' | 'incorrect' | 'unused' = 'unused';
+        for (const guess of gameState.tries) {
+          for (const result of guess.letterResults) {
+            if (result.letter === letter) {
+              if (result.status === 'correct') {
+                bestStatus = 'correct';
+                break;
+              } else if (result.status === 'wrong-position' && bestStatus === 'unused') {
+                bestStatus = 'wrong-position';
+              } else if (result.status === 'incorrect' && bestStatus === 'unused') {
+                bestStatus = 'incorrect';
+              }
+            }
+          }
+          if (bestStatus === 'correct') break;
+        }
+        return bestStatus;
+    };
   
     return (
       <div className="keyboard">
@@ -11,12 +39,13 @@ export const GameKeyboard = () => {
           <div key={rowIndex} className="keyboard-row">
             {row.map((key) => {
               const isSpecialKey = key === 'ENTER' || key === 'BACKSPACE';
-              
+              const status = isSpecialKey ? 'unused' : getKeyStatus(key);
+
               return (
                 <button
                   key={key}
-                  className={`keyboard-key ${isSpecialKey ? 'wide' : ''}`}
-                  onClick={() => {}}
+                  className={`keyboard-key ${isSpecialKey ? 'wide' : ''} ${status !== 'unused' ? status : ''}`}
+                  onClick={() => onKeyPress(key)}
                 >
                   {key}
                 </button>

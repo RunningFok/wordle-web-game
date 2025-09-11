@@ -5,12 +5,14 @@ import { GameBoard } from './GameBoard';
 
 interface GamePageProps {
     gameState: GameState;
+    setGameState: React.Dispatch<React.SetStateAction<GameState>>;
     onNewGame: () => void;
     onBackToHome: () => void;
   }
   
 export const GamePage: React.FC<GamePageProps> = ({
     gameState,
+    setGameState,
     onNewGame,
     onBackToHome
   }) => {
@@ -33,6 +35,7 @@ export const GamePage: React.FC<GamePageProps> = ({
             />
             <GameBoard
                 gameState={gameState}
+                setGameState={setGameState}
             />
         </main>
       </div>

@@ -180,7 +180,7 @@
   height: 60px;
   border: 2px solid #3a3a3c;
   background-color: #ffffff;
-  color: white;
+  color: black;
   font-size: 1.5rem;
   font-weight: bold;
   display: flex;
@@ -207,6 +207,13 @@
 
 .letter-tile.current {
   border-color: #565758;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { border-color: #565758; }
+  50% { border-color: #61dafb; }
+  100% { border-color: #565758; }
 }
 
 .keyboard {
@@ -230,4 +237,5 @@
   font-weight: bold;
   cursor: pointer;
   min-width: 40px;
+  transition: all 0.2s ease;
 }
