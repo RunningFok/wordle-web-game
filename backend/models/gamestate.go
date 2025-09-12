@@ -16,7 +16,7 @@ type LetterResult struct {
 
 type GuessResult struct {
 	GuessWord     string         `json:"guessWord"`
-	Results   []LetterResult `json:"results"`
+	LetterResultArray   []LetterResult `json:"letterResultArray"`
 	IsCorrect bool           `json:"isCorrect"`
 }
 
@@ -177,7 +177,7 @@ func UpdateGameState(gameState GameState) error {
 }
 
 func ValidateGuess(guessWord string, targetWord string) []LetterResult {
-	results := make([]LetterResult, len(guessWord))
+	letterResultArray := make([]LetterResult, len(guessWord))
 	
 	guessWord = strings.ToUpper(guessWord)
 	targetWord = strings.ToUpper(targetWord)
@@ -189,7 +189,7 @@ func ValidateGuess(guessWord string, targetWord string) []LetterResult {
 	
 	for i, letter := range guessWord {
 		if i < len(targetWord) && rune(targetWord[i]) == letter {
-			results[i] = LetterResult{
+			letterResultArray[i] = LetterResult{
 				Letter: string(letter),
 				Status: "correct",
 			}
@@ -198,15 +198,15 @@ func ValidateGuess(guessWord string, targetWord string) []LetterResult {
 	}
 	
 	for i, letter := range guessWord {
-		if results[i].Status == "" {
+		if letterResultArray[i].Status == "" {
 			if targetLetterCounts[letter] > 0 {
-				results[i] = LetterResult{
+				letterResultArray[i] = LetterResult{
 					Letter: string(letter),
 					Status: "incorrect-position",
 				}
 				targetLetterCounts[letter]--
 			} else {
-				results[i] = LetterResult{
+				letterResultArray[i] = LetterResult{
 					Letter: string(letter),
 					Status: "incorrect",
 				}
@@ -214,7 +214,7 @@ func ValidateGuess(guessWord string, targetWord string) []LetterResult {
 		}
 	}
 	
-	return results
+	return letterResultArray
 }
 
 func (gs *GameState) DetermineGameStatus(isCorrect bool) string {

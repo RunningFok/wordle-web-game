@@ -16,7 +16,7 @@ export const GameKeyboard: React.FC<GameKeyboardProps> = ({ gameState, onKeyPres
     const getKeyStatus = (letter: string): 'correct' | 'incorrect-position' | 'incorrect' | 'unused' => {
         let bestStatus: 'correct' | 'incorrect-position' | 'incorrect' | 'unused' = 'unused';
         for (const guess of gameState.tries) {
-          for (const result of guess.letterResults) {
+          for (const result of guess.letterResultArray) {
             if (result.letter === letter) {
               if (result.status === 'correct') {
                 bestStatus = 'correct';

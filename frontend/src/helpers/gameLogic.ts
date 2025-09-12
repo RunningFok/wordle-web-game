@@ -2,7 +2,7 @@ import { LetterResult } from "../types/core";
 import { WORD_LIST } from "../data/wordList";
 
 export const evaluateGuessLocal = (guess: string, target: string): LetterResult[] => {
-  const results: LetterResult[] = [];
+  const letterResultArray: LetterResult[] = [];
   const targetLetters = target.split('');
   const guessLetters = guess.split('');
   const usedTargetIndices = new Set<number>();
@@ -10,20 +10,20 @@ export const evaluateGuessLocal = (guess: string, target: string): LetterResult[
 
   for (let i = 0; i < 5; i++) {
     if (guessLetters[i] === targetLetters[i]) {
-      results[i] = { letter: guessLetters[i], status: 'correct' };
+      letterResultArray[i] = { letter: guessLetters[i], status: 'correct' };
       usedTargetIndices.add(i);
       usedGuessIndices.add(i);
     }
   }
 
   for (let i = 0; i < 5; i++) {
-    if (results[i]) continue;
+    if (letterResultArray[i]) continue;
       
     for (let j = 0; j < 5; j++) {
       if (usedTargetIndices.has(j)) continue;
 
       if (guessLetters[i] === targetLetters[j]) {
-        results[i] = { letter: guessLetters[i], status: 'incorrect-position' };
+        letterResultArray[i] = { letter: guessLetters[i], status: 'incorrect-position' };
         usedTargetIndices.add(j);
         usedGuessIndices.add(i);
         break;
@@ -32,11 +32,11 @@ export const evaluateGuessLocal = (guess: string, target: string): LetterResult[
   }
 
   for (let i = 0; i < 5; i++) {
-    if (!results[i]) {
-      results[i] = { letter: guessLetters[i], status: 'incorrect' };
+    if (!letterResultArray[i]) {
+      letterResultArray[i] = { letter: guessLetters[i], status: 'incorrect' };
     }
   }
-  return results;
+  return letterResultArray;
 };
 
 export const getRandomWord = (): string => {

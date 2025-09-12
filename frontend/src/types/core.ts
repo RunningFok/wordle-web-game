@@ -5,7 +5,7 @@ export interface LetterResult {
 
 export interface GuessResult {
   guessWord: string;
-  letterResults: LetterResult[];
+  letterResultArray: LetterResult[];
   isCorrect: boolean;
 }
 

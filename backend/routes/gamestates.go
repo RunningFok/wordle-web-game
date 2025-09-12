@@ -98,11 +98,11 @@ func playGameState(context *gin.Context) {
 		return
 	}
 	
-	letterResults := models.ValidateGuess(updateRequest.GuessWord, existingGameState.TargetWord)
+	letterResultArray := models.ValidateGuess(updateRequest.GuessWord, existingGameState.TargetWord)
 	
 	validatedGuess := models.GuessResult{
 		GuessWord: updateRequest.GuessWord,
-		Results:   letterResults,
+		LetterResultArray:   letterResultArray,
 		IsCorrect: updateRequest.GuessWord == existingGameState.TargetWord,
 	}
 	

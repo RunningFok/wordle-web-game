@@ -94,7 +94,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameState, setGameState })
       if (guess) {
         return (
           <div key={rowIndex} className="guess-row">
-            {guess.letterResults.map((result, index) => renderTile(result.letter, result.status, index))}
+            {guess.letterResultArray.map((result, index) => renderTile(result.letter, result.status, index))}
           </div>
         );
       } else if (rowIndex === gameState.tries.length) {
