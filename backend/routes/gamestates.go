@@ -110,7 +110,7 @@ func playGameState(context *gin.Context) {
 	
 	updateGameState := models.GameState{
 		ID:         updateRequest.ID,
-		Tries:      []models.GuessResult{validatedGuess}, // Single guess to append
+		Tries:      []models.GuessResult{validatedGuess},
 		GameStatus: newGameStatus,
 	}
 	
