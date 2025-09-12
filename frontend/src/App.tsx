@@ -3,59 +3,53 @@ import './App.css';
 import { Home } from './components/Home';
 import { GamePage } from './components/GamePage';
 import { GameFinishModal } from './components/PopupModals';
-import { GameState } from './types/core';
-import { getRandomWord } from './helpers/gameLogic';
+import { GameProvider, useGame } from './contexts/GameContext';
 
-const DEFAULT_GAME_STATE: GameState = {
-  currentGuessWord: '',
-  tries: [],
-  gameStatus: 'playing',
-  targetWord: getRandomWord(),
-  maxTries: 6,
-  mode: 'classic'
-};
-
-function App() {
-  const [gameState, setGameState] = useState<GameState>(DEFAULT_GAME_STATE);
+function AppContent() {
+  const { gameState, createNewGame, error, clearError } = useGame();
   const [showGame, setShowGame] = useState<boolean>(false);
   const [showGameFinish, setShowGameFinish] = useState(false);
 
   useEffect(() => {
-    if (gameState.gameStatus === 'won' || gameState.gameStatus === 'lost') {
+    if (gameState?.gameStatus === 'won' || gameState?.gameStatus === 'lost') {
       setShowGameFinish(true);
     } else {
       setShowGameFinish(false);
     }
-  }, [gameState.gameStatus]);
+  }, [gameState?.gameStatus]);
 
   const goBackToHome = () => {
     setShowGame(false);
     setShowGameFinish(false);
   };
 
-  const startNewGame = (gameMode: 'classic' | 'custom') => {    
-    setGameState({
-      ...DEFAULT_GAME_STATE,
-      targetWord: getRandomWord(),
-      mode: gameMode
-    });
+  const startNewGame = async (gameMode: 'classic' | 'custom') => {
+    await createNewGame(gameMode);
     setShowGame(true);
   };
 
-  const playAgainGame = () => {
-    setGameState({
-      ...DEFAULT_GAME_STATE,
-      targetWord: getRandomWord(),
-    });
-    setShowGameFinish(false);
+  const playAgainGame = async () => {
+    if (gameState) {
+      await createNewGame(gameState.mode);
+      setShowGameFinish(false);
+    }
   };
+
+  if (error) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h2>Error</h2>
+        <p>{error}</p>
+        <button onClick={clearError}>Clear Error</button>
+      </div>
+    );
+  }
 
   return (
     <div>
-      {showGame ? (
+      {showGame && gameState ? (
         <GamePage
           gameState={gameState}
-          setGameState={setGameState}
           onNewGame={() => startNewGame(gameState.mode)}
           onBackToHome={goBackToHome}
         />
@@ -63,15 +57,25 @@ function App() {
         <Home onStartGame={startNewGame} />
       )}
       
-      <GameFinishModal
-        isOpen={showGameFinish}
-        onClose={() => setShowGameFinish(false)}
-        gameStatus={gameState.gameStatus as 'won' | 'lost'}
-        targetWord={gameState.targetWord}
-        onPlayAgain={playAgainGame}
-        onBackToHome={goBackToHome}
-      />
+      {gameState && gameState.targetWord && (
+        <GameFinishModal
+          isOpen={showGameFinish}
+          onClose={() => setShowGameFinish(false)}
+          gameStatus={gameState.gameStatus as 'won' | 'lost'}
+          targetWord={gameState.targetWord}
+          onPlayAgain={playAgainGame}
+          onBackToHome={goBackToHome}
+        />
+      )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <GameProvider>
+      <AppContent />
+    </GameProvider>
   );
 }
 

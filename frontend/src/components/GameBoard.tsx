@@ -3,68 +3,50 @@ import { GameKeyboard } from './GameKeyboard';
 import { GameState, GuessResult, LetterResult } from '../types/core';
 import { evaluateGuessLocal, isWordInList } from '../helpers/gameLogic';
 import { InvalidWordModal } from './PopupModals';
+import { useGame } from '../contexts/GameContext';
 
 interface GameBoardProps {
   gameState: GameState;
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }
   
-export const GameBoard: React.FC<GameBoardProps> = ({ gameState, setGameState }) => {
+export const GameBoard: React.FC<GameBoardProps> = ({ gameState }) => {
+  const { makeGuess, loading } = useGame();
   const [showPopup, setShowPopup] = useState(false);
   const [invalidWord, setInvalidWord] = useState('');
+  const [currentGuessWord, setCurrentGuessWord] = useState('');
 
   const submitGuess = useCallback(async () => {
-    if (gameState.currentGuessWord.length !== 5) return;
+    if (currentGuessWord.length !== 5) return;
     if (gameState.gameStatus !== 'playing') return;
+    if (loading) return;
 
-    if (!isWordInList(gameState.currentGuessWord.toUpperCase())) {
-      setInvalidWord(gameState.currentGuessWord.toUpperCase());
+    if (!isWordInList(currentGuessWord.toUpperCase())) {
+      setInvalidWord(currentGuessWord.toUpperCase());
       setShowPopup(true);
       return;
     }
 
     try {
-      let results: LetterResult[];
-      results = evaluateGuessLocal(gameState.currentGuessWord.toUpperCase(), gameState.targetWord);
-      const newGuess: GuessResult = {
-        guessWord: gameState.currentGuessWord.toUpperCase(),
-        letterResults: results,
-        isCorrect: results.every(r => r.status === 'correct')
-      };
-      const newTries = [...gameState.tries, newGuess];
-      const isGameWon = newGuess.isCorrect;
-      const isGameLost = !isGameWon && newTries.length >= gameState.maxTries;
-
-      setGameState(prev => ({
-        ...prev,
-        tries: newTries,
-        currentGuessWord: '',
-        gameStatus: isGameWon ? 'won' : isGameLost ? 'lost' : 'playing'
-      }));
+      await makeGuess(currentGuessWord.toUpperCase());
+      setCurrentGuessWord('');
     } catch (error) {
       console.error('Error submitting guess:', error);
       alert('Error submitting guess. Please try again.');
     }
-  }, [gameState.currentGuessWord, gameState.gameStatus, gameState.targetWord, gameState.tries, gameState.maxTries, gameState.mode]);
+  }, [currentGuessWord, gameState.gameStatus, loading, makeGuess]);
 
   const handleKeyPress = useCallback((key: string) => {
-    if (gameState.gameStatus !== 'playing') return;
+    if (gameState.gameStatus !== 'playing' || loading) return;
     if (key === 'ENTER') {
       submitGuess();
     } else if (key === 'BACKSPACE') {
-      setGameState(prev => ({
-        ...prev,
-        currentGuessWord: prev.currentGuessWord.slice(0, -1)
-      }));
+      setCurrentGuessWord(prev => prev.slice(0, -1));
     } else if (key.length === 1 && key.match(/[A-Z]/)) {
-      if (gameState.currentGuessWord.length < 5) {
-        setGameState(prev => ({
-          ...prev,
-          currentGuessWord: prev.currentGuessWord + key
-        }));
+      if (currentGuessWord.length < 5) {
+        setCurrentGuessWord(prev => prev + key);
       }
     }
-  }, [gameState.gameStatus, gameState.currentGuessWord, submitGuess]);
+  }, [gameState.gameStatus, currentGuessWord, submitGuess, loading]);
 
   useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
@@ -98,7 +80,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameState, setGameState })
           </div>
         );
       } else if (rowIndex === gameState.tries.length) {
-        const currentGuessLetters = gameState.currentGuessWord.split('');
+        const currentGuessLetters = currentGuessWord.split('');
         return (
           <div key={rowIndex} className="guess-row">
             {Array.from({ length: 5 }, (_, index) => {
