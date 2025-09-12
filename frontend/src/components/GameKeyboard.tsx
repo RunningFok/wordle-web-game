@@ -13,16 +13,16 @@ export const GameKeyboard: React.FC<GameKeyboardProps> = ({ gameState, onKeyPres
       ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACKSPACE']
     ];
 
-    const getKeyStatus = (letter: string): 'correct' | 'wrong-position' | 'incorrect' | 'unused' => {
-        let bestStatus: 'correct' | 'wrong-position' | 'incorrect' | 'unused' = 'unused';
+    const getKeyStatus = (letter: string): 'correct' | 'incorrect-position' | 'incorrect' | 'unused' => {
+        let bestStatus: 'correct' | 'incorrect-position' | 'incorrect' | 'unused' = 'unused';
         for (const guess of gameState.tries) {
           for (const result of guess.letterResults) {
             if (result.letter === letter) {
               if (result.status === 'correct') {
                 bestStatus = 'correct';
                 break;
-              } else if (result.status === 'wrong-position' && bestStatus === 'unused') {
-                bestStatus = 'wrong-position';
+              } else if (result.status === 'incorrect-position' && bestStatus === 'unused') {
+                bestStatus = 'incorrect-position';
               } else if (result.status === 'incorrect' && bestStatus === 'unused') {
                 bestStatus = 'incorrect';
               }

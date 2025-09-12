@@ -23,7 +23,7 @@ export const evaluateGuessLocal = (guess: string, target: string): LetterResult[
       if (usedTargetIndices.has(j)) continue;
 
       if (guessLetters[i] === targetLetters[j]) {
-        results[i] = { letter: guessLetters[i], status: 'wrong-position' };
+        results[i] = { letter: guessLetters[i], status: 'incorrect-position' };
         usedTargetIndices.add(j);
         usedGuessIndices.add(i);
         break;

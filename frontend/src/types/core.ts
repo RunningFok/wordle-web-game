@@ -1,6 +1,6 @@
 export interface LetterResult {
   letter: string;
-  status: 'correct' | 'wrong-position' | 'incorrect';
+  status: 'correct' | 'incorrect-position' | 'incorrect';
 }
 
 export interface GuessResult {

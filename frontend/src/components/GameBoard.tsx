@@ -79,7 +79,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameState, setGameState })
       return () => window.removeEventListener('keydown', handleKeyDown);
   }, [gameState.gameStatus, gameState.currentGuessWord, handleKeyPress]);
       
-  const renderTile = (letter: string, status: 'correct' | 'incorrect' | 'wrong-position' | 'current' | 'empty', index: number) => {
+  const renderTile = (letter: string, status: 'correct' | 'incorrect' | 'incorrect-position' | 'current' | 'empty', index: number) => {
       return (
         <div
           key={index}
