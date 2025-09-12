@@ -187,3 +187,14 @@ func ValidateGuess(guessWord string, targetWord string) []LetterResult {
 	return results
 }
 
+func (gs *GameState) DetermineGameStatus(isCorrect bool) string {
+	if isCorrect {
+		return "won"
+	} else {
+		if len(gs.Tries)+1 >= gs.MaxTries {
+			return "lost"
+		} else {
+			return gs.GameStatus
+		}
+	}
+}
