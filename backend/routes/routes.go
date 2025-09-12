@@ -9,4 +9,5 @@ func RegisterRoutes(server *gin.Engine) {
 	server.GET("/gamestates", getAllGameStates)
 	server.GET("/gamestates/:id", getGameStateByID)
 	server.PUT("/gamestates", playGameState)
+	server.PUT("/gamestates/:id", leaveGameStateByID)
 }

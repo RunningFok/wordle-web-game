@@ -228,3 +228,22 @@ func (gs *GameState) DetermineGameStatus(isCorrect bool) string {
 		}
 	}
 }
+
+func (gs *GameState) LeaveGameState() error {
+	updatedAt := time.Now()
+	
+	query := `
+		UPDATE game_states 
+		SET game_status = ?, updated_at = ?
+		WHERE id = ?
+	`
+	
+	_, err := database.DB.Exec(query, "lost", updatedAt, gs.ID)
+	if err != nil {
+		return fmt.Errorf("failed to leave game state: %v", err)
+	}
+	
+	return nil
+}
+
+

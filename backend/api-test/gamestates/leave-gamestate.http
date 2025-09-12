@@ -1,0 +1,2 @@
+PUT http://localhost:8080/gamestates/3
+content-type: application/json
