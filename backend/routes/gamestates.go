@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"wordle-backend/models"
 
 	"github.com/gin-gonic/gin"
