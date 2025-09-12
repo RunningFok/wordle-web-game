@@ -146,6 +146,36 @@ func GetGameStateByID(gameStateID int64) (GameState, error) {
 	return gameState, nil
 }
 
+func UpdateGameState(gameState GameState) error {
+	existingGameState, err := GetGameStateByID(gameState.ID)
+	if err != nil {
+		return fmt.Errorf("failed to get existing game state: %v", err)
+	}
+	
+	existingGameState.Tries = append(existingGameState.Tries, gameState.Tries...)
+	
+	existingGameState.GameStatus = gameState.GameStatus
+	existingGameState.UpdatedAt = time.Now()
+	
+	triesJSON, err := json.Marshal(existingGameState.Tries)
+	if err != nil {
+		return fmt.Errorf("failed to marshal tries to JSON: %v", err)
+	}
+	
+	query := `
+		UPDATE game_states 
+		SET tries = ?, game_status = ?, updated_at = ?
+		WHERE id = ?
+	`
+	
+	_, err = database.DB.Exec(query, string(triesJSON), existingGameState.GameStatus, existingGameState.UpdatedAt, existingGameState.ID)
+	if err != nil {
+		return fmt.Errorf("failed to update game state: %v", err)
+	}
+	
+	return nil
+}
+
 func ValidateGuess(guessWord string, targetWord string) []LetterResult {
 	results := make([]LetterResult, len(guessWord))
 	

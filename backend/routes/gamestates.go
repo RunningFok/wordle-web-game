@@ -68,3 +68,75 @@ func getGameStateByID(context *gin.Context) {
 	
 	context.JSON(http.StatusOK, gameState)
 }
+
+func playGameState(context *gin.Context) {
+	fmt.Println("Updating game state")
+	
+	var updateRequest struct {
+		ID        int64  `json:"id"`
+		GuessWord string `json:"guessWord"`
+	}
+	
+	if err := context.ShouldBindJSON(&updateRequest); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body: " + err.Error()})
+		return
+	}
+	
+	if updateRequest.ID == 0 {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "ID is required"})
+		return
+	}
+	
+	if updateRequest.GuessWord == "" {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "guessWord is required"})
+		return
+	}
+	
+	existingGameState, err := models.GetGameStateByID(updateRequest.ID)
+	if err != nil {
+		context.JSON(http.StatusNotFound, gin.H{"error": "Game state not found"})
+		return
+	}
+	
+	letterResults := models.ValidateGuess(updateRequest.GuessWord, existingGameState.TargetWord)
+	
+	validatedGuess := models.GuessResult{
+		GuessWord: updateRequest.GuessWord,
+		Results:   letterResults,
+		IsCorrect: updateRequest.GuessWord == existingGameState.TargetWord,
+	}
+	
+	newGameStatus := existingGameState.DetermineGameStatus(validatedGuess.IsCorrect)
+	
+	updateGameState := models.GameState{
+		ID:         updateRequest.ID,
+		Tries:      []models.GuessResult{validatedGuess}, // Single guess to append
+		GameStatus: newGameStatus,
+	}
+	
+	err = models.UpdateGameState(updateGameState)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update game state: " + err.Error()})
+		return
+	}
+	
+	updatedGameState, err := models.GetGameStateByID(updateRequest.ID)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get updated game state: " + err.Error()})
+		return
+	}
+	
+	fmt.Printf("Game state updated with ID: %d\n", updatedGameState.ID)
+	
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Game state updated successfully",
+		"id": updatedGameState.ID,
+		"targetWord": updatedGameState.TargetWord,
+		"tries": updatedGameState.Tries,
+		"gameStatus": updatedGameState.GameStatus,
+		"mode": updatedGameState.Mode,
+		"maxTries": updatedGameState.MaxTries,
+		"updatedAt": updatedGameState.UpdatedAt,
+		"createdAt": updatedGameState.CreatedAt,
+	})
+}
