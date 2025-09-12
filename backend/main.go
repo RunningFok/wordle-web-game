@@ -2,20 +2,44 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"wordle-backend/database"
 	"wordle-backend/routes"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load("../.env")
+	if err != nil {
+		fmt.Println("Warning: .env file not found, using system environment variables")
+	}
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	apiUrl := os.Getenv("API_URL")
+	if apiUrl == "" {
+		apiUrl = "http://localhost:3000"
+	}
+	
 	fmt.Println("Starting server...")
 	database.InitDB()
 	fmt.Println("Database initialized successfully")
 	
 	router := gin.Default()
 	
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{apiUrl, "http://localhost:3000", "http://127.0.0.1:3000"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept"}
+	router.Use(cors.New(config))
+	
 	routes.RegisterRoutes(router)
 	
-	router.Run(":8080")
+	
+	fmt.Printf("Server starting on port %s\n", port)
+	router.Run(":" + port)
 }
