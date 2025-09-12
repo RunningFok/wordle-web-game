@@ -1,0 +1,2 @@
+GET http://localhost:8080/gamestates
+content-type: application/json

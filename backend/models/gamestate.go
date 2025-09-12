@@ -69,3 +69,78 @@ func SaveGameState(gameState GameState) error {
 	
 	return nil
 }
+
+func GetAllGameStates() ([]GameState, error) {
+	var gameStates []GameState
+	
+	query := `
+		SELECT id, target_word, tries, game_status, mode, max_tries, created_at, updated_at
+		FROM game_states
+	`
+	
+	rows, err := database.DB.Query(query)
+	if err != nil {
+		return []GameState{}, fmt.Errorf("failed to get all game states: %v", err)
+	}
+	defer rows.Close()
+	
+	for rows.Next() {
+		var gameState GameState
+		var triesJSON string
+		
+		err := rows.Scan(
+			&gameState.ID,
+			&gameState.TargetWord,
+			&triesJSON,
+			&gameState.GameStatus,
+			&gameState.Mode,
+			&gameState.MaxTries,
+			&gameState.CreatedAt,
+			&gameState.UpdatedAt,
+		)
+		if err != nil {
+			return []GameState{}, fmt.Errorf("failed to scan game state: %v", err)
+		}
+		
+		if err := json.Unmarshal([]byte(triesJSON), &gameState.Tries); err != nil {
+			return []GameState{}, fmt.Errorf("failed to unmarshal tries: %v", err)
+		}
+		
+		gameStates = append(gameStates, gameState)
+	}
+	
+	return gameStates, nil
+}
+
+func GetGameStateByID(gameStateID int64) (GameState, error) {
+	var gameState GameState
+	
+	query := `
+		SELECT id, target_word, tries, game_status, mode, max_tries, created_at, updated_at
+		FROM game_states 
+		WHERE id = ?
+	`
+	
+	row := database.DB.QueryRow(query, gameStateID)
+	var triesJSON string
+	
+	err := row.Scan(
+		&gameState.ID,
+		&gameState.TargetWord,
+		&triesJSON,
+		&gameState.GameStatus,
+		&gameState.Mode,
+		&gameState.MaxTries,
+		&gameState.CreatedAt,
+		&gameState.UpdatedAt,
+	)
+	if err != nil {
+		return GameState{}, fmt.Errorf("failed to load game state: %v", err)
+	}
+	
+	if err := json.Unmarshal([]byte(triesJSON), &gameState.Tries); err != nil {
+		return GameState{}, fmt.Errorf("failed to unmarshal tries: %v", err)
+	}
+	
+	return gameState, nil
+}
