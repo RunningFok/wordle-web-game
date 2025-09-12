@@ -10,10 +10,30 @@ export interface GuessResult {
 }
 
 export interface GameState {
-  currentGuessWord: string;
+  id?: number;
+  currentGuessWord?: string;
   tries: GuessResult[];
   gameStatus: 'playing' | 'won' | 'lost';
-  targetWord: string;
+  targetWord?: string;
   maxTries: number;
   mode: 'classic' | 'custom';
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CreateGameStateResponse {
+  message: string;
+  id: number;
+  targetWord: string;
+  tries: GuessResult[];
+  gameStatus: 'playing' | 'won' | 'lost';
+  mode: string;
+  maxTries: number;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface PlayGameStateRequest {
+  id: number;
+  guessWord: string;
 }
