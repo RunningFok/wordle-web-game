@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 	"wordle-backend/database"
 	"wordle-backend/helpers"
@@ -144,3 +145,45 @@ func GetGameStateByID(gameStateID int64) (GameState, error) {
 	
 	return gameState, nil
 }
+
+func ValidateGuess(guessWord string, targetWord string) []LetterResult {
+	results := make([]LetterResult, len(guessWord))
+	
+	guessWord = strings.ToUpper(guessWord)
+	targetWord = strings.ToUpper(targetWord)
+	
+	targetLetterCounts := make(map[rune]int)
+	for _, letter := range targetWord {
+		targetLetterCounts[letter]++
+	}
+	
+	for i, letter := range guessWord {
+		if i < len(targetWord) && rune(targetWord[i]) == letter {
+			results[i] = LetterResult{
+				Letter: string(letter),
+				Status: "correct",
+			}
+			targetLetterCounts[letter]--
+		}
+	}
+	
+	for i, letter := range guessWord {
+		if results[i].Status == "" {
+			if targetLetterCounts[letter] > 0 {
+				results[i] = LetterResult{
+					Letter: string(letter),
+					Status: "incorrect-position",
+				}
+				targetLetterCounts[letter]--
+			} else {
+				results[i] = LetterResult{
+					Letter: string(letter),
+					Status: "incorrect",
+				}
+			}
+		}
+	}
+	
+	return results
+}
+
