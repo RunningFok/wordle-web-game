@@ -16,6 +16,7 @@ export interface GameState {
   gameStatus: 'playing' | 'won' | 'lost';
   targetWord?: string;
   maxTries: number;
+  wordSize?: number;
   mode: 'classic' | 'custom';
   createdAt?: string;
   updatedAt?: string;
@@ -29,6 +30,7 @@ export interface CreateGameStateResponse {
   gameStatus: 'playing' | 'won' | 'lost';
   mode: string;
   maxTries: number;
+  wordSize?: number;
   updatedAt: string;
   createdAt: string;
 }

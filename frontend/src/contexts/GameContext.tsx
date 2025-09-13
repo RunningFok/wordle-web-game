@@ -10,6 +10,7 @@ interface GameContextType {
   loading: boolean;
   error: string | null;
   createNewGame: (mode: GameMode) => Promise<void>;
+  createCustomGame: (wordSize: number, maxTries: number) => Promise<void>;
   makeGuess: (guessWord: string) => Promise<void>;
   leaveGame: () => Promise<void>;
   clearError: () => void;
@@ -60,6 +61,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           gameStatus: 'playing',
           targetWord: getRandomWord(),
           maxTries: 6,
+          wordSize: 5,
           mode: 'classic'
         };
         setGameState(newGameState);
@@ -74,6 +76,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           gameStatus: response.gameStatus,
           targetWord: response.targetWord,
           maxTries: response.maxTries,
+          wordSize: response.wordSize || 5,
           mode: 'custom',
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
@@ -83,6 +86,34 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create new game');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const createCustomGame = useCallback(async (wordSize: number, maxTries: number) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response: CreateGameStateResponse = await apiService.createGameState(maxTries, wordSize);
+      
+      const newGameState: GameState = {
+        id: response.id,
+        currentGuessWord: '',
+        tries: response.tries,
+        gameStatus: response.gameStatus,
+        targetWord: response.targetWord,
+        maxTries: response.maxTries,
+        wordSize: response.wordSize || wordSize,
+        mode: 'custom',
+        createdAt: response.createdAt,
+        updatedAt: response.updatedAt,
+      };
+      setGameState(newGameState);
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create custom game');
     } finally {
       setLoading(false);
     }
@@ -191,6 +222,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     loading,
     error,
     createNewGame,
+    createCustomGame,
     makeGuess,
     leaveGame,
     clearError,

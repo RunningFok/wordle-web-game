@@ -41,9 +41,11 @@ class ApiService {
     return response.json();
   }
 
-  async createGameState(): Promise<CreateGameStateResponse> {
+  async createGameState(maxTries?: number, wordSize?: number): Promise<CreateGameStateResponse> {
+    const body = maxTries && wordSize ? { maxTries, wordSize } : {};
     return this.makeRequest<CreateGameStateResponse>('/gamestates', {
       method: 'POST',
+      body: JSON.stringify(body),
     });
   }
 

@@ -13,10 +13,10 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameState }) => {
   const [currentGuessWord, setCurrentGuessWord] = useState('');
 
   const submitGuess = useCallback(async () => {
-    if (currentGuessWord.length !== 5) return;
+    const wordSize = gameState.wordSize || 5;
+    if (currentGuessWord.length !== wordSize) return;
     if (gameState.gameStatus !== 'playing') return;
     if (loading) return;
-
 
     try {
       await makeGuess(currentGuessWord.toUpperCase());
@@ -25,16 +25,17 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameState }) => {
       console.error('Error submitting guess:', error);
       alert('Error submitting guess. Please try again.');
     }
-  }, [currentGuessWord, gameState.gameStatus, loading, makeGuess]);
+  }, [currentGuessWord, gameState.gameStatus, gameState.wordSize, loading, makeGuess]);
 
   const handleKeyPress = useCallback((key: string) => {
+    const wordSize = gameState.wordSize || 5;
     if (gameState.gameStatus !== 'playing' || loading) return;
     if (key === 'ENTER') {
       submitGuess();
     } else if (key === 'BACKSPACE') {
       setCurrentGuessWord(prev => prev.slice(0, -1));
     } else if (key.length === 1 && key.match(/[A-Z]/)) {
-      if (currentGuessWord.length < 5) {
+      if (currentGuessWord.length < wordSize) {
         setCurrentGuessWord(prev => prev + key);
       }
     }
@@ -72,10 +73,11 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameState }) => {
           </div>
         );
       } else if (rowIndex === gameState.tries.length) {
+        const wordSize = gameState.wordSize || 5;
         const currentGuessLetters = currentGuessWord.split('');
         return (
           <div key={rowIndex} className="guess-row">
-            {Array.from({ length: 5 }, (_, index) => {
+            {Array.from({ length: wordSize }, (_, index) => {
               const letter = currentGuessLetters[index] || '';
               const status = letter ? 'current' : 'empty';
               return renderTile(letter, status, index);
@@ -83,9 +85,10 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameState }) => {
           </div>
         );
       } else {
+        const wordSize = gameState.wordSize || 5;
         return (
           <div key={rowIndex} className="guess-row">
-            {Array.from({ length: 5 }, (_, index) => renderTile('', 'empty', index))}
+            {Array.from({ length: wordSize }, (_, index) => renderTile('', 'empty', index))}
           </div>
         );
       }

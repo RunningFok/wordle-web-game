@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { CustomGameModal } from './PopupModals';
 
 interface HomePageProps {
   onStartGame: (mode: 'classic' | 'custom') => void;
+  onStartCustomGame: (wordSize: number, maxTries: number) => void;
 }
 
 export const Home: React.FC<HomePageProps> = ({
   onStartGame,
+  onStartCustomGame,
 }) => {
+  const [showCustomGameModal, setShowCustomGameModal] = useState(false);
     return (
       <div className="App">
         <header className="App-header">
@@ -25,13 +29,18 @@ export const Home: React.FC<HomePageProps> = ({
               <div className="game-card custom-card">
                 <button 
                   className="game-button custom-button"
-                  onClick={() => onStartGame('custom')}
+                  onClick={() => setShowCustomGameModal(true)}
                 >
                   Custom Mode
                 </button>
               </div>
             </div>
           </main>
+          <CustomGameModal
+            isOpen={showCustomGameModal}
+            onClose={() => setShowCustomGameModal(false)}
+            onStartCustomGame={onStartCustomGame}
+          />
       </div>
     );
   };

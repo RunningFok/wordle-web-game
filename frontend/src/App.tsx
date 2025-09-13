@@ -6,7 +6,7 @@ import { GameFinishModal } from './components/PopupModals';
 import { GameProvider, useGame } from './contexts/GameContext';
 
 function AppContent() {
-  const { gameState, createNewGame, error, clearError } = useGame();
+  const { gameState, createNewGame, createCustomGame, error, clearError } = useGame();
   const [showGame, setShowGame] = useState<boolean>(false);
   const [showGameFinish, setShowGameFinish] = useState(false);
 
@@ -25,6 +25,11 @@ function AppContent() {
 
   const startNewGame = async (gameMode: 'classic' | 'custom') => {
     await createNewGame(gameMode);
+    setShowGame(true);
+  };
+
+  const startCustomGame = async (wordSize: number, maxTries: number) => {
+    await createCustomGame(wordSize, maxTries);
     setShowGame(true);
   };
 
@@ -54,7 +59,7 @@ function AppContent() {
           onBackToHome={goBackToHome}
         />
       ) : (
-        <Home onStartGame={startNewGame} />
+        <Home onStartGame={startNewGame} onStartCustomGame={startCustomGame} />
       )}
       
       {gameState && gameState.targetWord && (
