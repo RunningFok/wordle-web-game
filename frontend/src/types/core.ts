@@ -37,3 +37,8 @@ export interface PlayGameStateRequest {
   id: number;
   guessWord: string;
 }
+
+export interface PlayGameStateErrorType {
+  error: string;
+  invalid_guess_word?: string;
+}

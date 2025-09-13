@@ -1,9 +1,15 @@
-import { CreateGameStateResponse, GameState, PlayGameStateRequest } from '../types/core';
+import { CreateGameStateResponse, GameState, PlayGameStateRequest, PlayGameStateErrorType } from '../types/core';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
-export interface ApiError {
-  error: string;
+export class PlayGameStateError extends Error {
+  public invalidGuessWord?: string;
+  
+  constructor(message: string, invalidGuessWord?: string) {
+    super(message);
+    this.name = 'PlayGameStateError';
+    this.invalidGuessWord = invalidGuessWord;
+  }
 }
 
 class ApiService {
@@ -22,7 +28,13 @@ class ApiService {
     const response = await fetch(url, { ...defaultOptions, ...options });
 
     if (!response.ok) {
-      const errorData: ApiError = await response.json();
+      const errorData: PlayGameStateErrorType = await response.json();
+      if (errorData.invalid_guess_word) {
+        throw new PlayGameStateError(
+          errorData.error || `HTTP error! status: ${response.status}`,
+          errorData.invalid_guess_word
+        );
+      }
       throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
     }
 

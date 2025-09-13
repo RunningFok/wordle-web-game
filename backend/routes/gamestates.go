@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"wordle-backend/helpers"
 	"wordle-backend/models"
 
 	"github.com/gin-gonic/gin"
@@ -97,6 +98,14 @@ func playGameState(context *gin.Context) {
 		context.JSON(http.StatusNotFound, gin.H{"error": "Game state not found"})
 		return
 	}
+
+	fmt.Printf("Validating word: %s\n", updateRequest.GuessWord)
+	if !helpers.IsWordInList(updateRequest.GuessWord) {
+		fmt.Printf("Word validation failed for: %s\n", updateRequest.GuessWord)
+		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid word: " + updateRequest.GuessWord + " is not a valid word", "invalid_guess_word": updateRequest.GuessWord})
+		return
+	}
+	fmt.Printf("Word validation passed for: %s\n", updateRequest.GuessWord)
 	
 	letterResultArray := models.ValidateGuess(updateRequest.GuessWord, existingGameState.TargetWord)
 	

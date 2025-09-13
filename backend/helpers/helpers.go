@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"math/rand"
+	"slices"
+	"strings"
 	"wordle-backend/data"
 	"wordle-backend/database"
 )
@@ -24,4 +26,19 @@ func GetNextID(tableName string) (int64, error) {
 
 func GetRandomWord() string {
 	return data.WordList[rand.Intn(len(data.WordList))]
+
+func IsWordInList(word string) bool {
+	word = strings.ToUpper(strings.TrimSpace(word))
+	wordLength := len(word)
+	
+	switch wordLength {
+	case 4:
+		return slices.Contains(data.FourLetterWordList, word)
+	case 5:
+		return slices.Contains(data.FiveLetterWordList, word)
+	case 6:
+		return slices.Contains(data.SixLetterWordList, word)
+	default:
+		return false
+	}
 }

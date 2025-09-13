@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { GameState, CreateGameStateResponse, GuessResult } from '../types/core';
-import { apiService } from '../services/api';
+import { apiService, PlayGameStateError } from '../services/api';
 import { getRandomWord } from '../helpers/gameLogic';
 
 type GameMode = 'classic' | 'custom';
@@ -13,6 +13,9 @@ interface GameContextType {
   makeGuess: (guessWord: string) => Promise<void>;
   leaveGame: () => Promise<void>;
   clearError: () => void;
+  showInvalidWordPopup: boolean;
+  invalidWord: string;
+  clearInvalidWordPopup: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -33,9 +36,16 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showInvalidWordPopup, setShowInvalidWordPopup] = useState(false);
+  const [invalidWord, setInvalidWord] = useState('');
 
   const clearError = useCallback(() => {
     setError(null);
+  }, []);
+
+  const clearInvalidWordPopup = useCallback(() => {
+    setShowInvalidWordPopup(false);
+    setInvalidWord('');
   }, []);
 
   const createNewGame = useCallback(async (mode: GameMode) => {
@@ -86,11 +96,19 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
     setLoading(true);
     setError(null);
+    setShowInvalidWordPopup(false);
 
     try {
       if (gameState.mode === 'classic') {
         if (!gameState.targetWord) {
           throw new Error('Target word is required for classic mode');
+        }
+        
+        const { isWordInList } = await import('../helpers/gameLogic');
+        if (!isWordInList(guessWord.toUpperCase())) {
+          setInvalidWord(guessWord.toUpperCase());
+          setShowInvalidWordPopup(true);
+          return;
         }
         
         const { evaluateGuessLocal } = await import('../helpers/gameLogic');
@@ -132,7 +150,11 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       }
       
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to make guess');
+      if (err instanceof PlayGameStateError && err.invalidGuessWord) {
+        setInvalidWord(err.invalidGuessWord);
+        setShowInvalidWordPopup(true);
+        return;
+      }
     } finally {
       setLoading(false);
     }
@@ -172,6 +194,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     makeGuess,
     leaveGame,
     clearError,
+    showInvalidWordPopup,
+    invalidWord,
+    clearInvalidWordPopup,
   };
 
   return (
