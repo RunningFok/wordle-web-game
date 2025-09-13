@@ -19,7 +19,7 @@ export const GamePage: React.FC<GamePageProps> = ({
         <header className="App-header">
           <div className="game-header">
             <div className="mode-indicator">
-              {gameState.mode === 'classic' ? 'Classic Mode' : 'Custom Mode'}
+              {gameState.mode === 'classic' ? 'Classic Mode' : 'Speed Mode'}
             </div>
             <div className="game-header-buttons">
               <button className="back-button" onClick={onBackToHome}>

@@ -49,7 +49,7 @@
   border-color: #48B3AF;
 }
 
-.game-card.custom-card {
+.game-card.speed-card {
   border-color: #A7E399;
 }
 
@@ -70,7 +70,7 @@
   color: #282C34;
 }
 
-.custom-button {
+.speed-button {
   background-color: #A7E399;
   color: #FFFFFF;
 }

@@ -6,7 +6,7 @@ import { GameFinishModal } from './components/PopupModals';
 import { GameProvider, useGame } from './contexts/GameContext';
 
 function AppContent() {
-  const { gameState, createNewGame, createCustomGame, createClassicGame, error, clearError } = useGame();
+  const { gameState, createNewGame, createSpeedGame, createClassicGame, error, clearError } = useGame();
   const [showGame, setShowGame] = useState<boolean>(false);
   const [showGameFinish, setShowGameFinish] = useState(false);
 
@@ -23,22 +23,22 @@ function AppContent() {
     setShowGameFinish(false);
   };
 
-  const startNewGame = async (gameMode: 'classic' | 'custom') => {
+  const startNewGame = async (gameMode: 'classic' | 'speed') => {
     await createNewGame(gameMode);
     setShowGame(true);
   };
 
-  const startNewGameWithConfig = async (gameMode: 'classic' | 'custom', wordSize: number, maxTries: number) => {
+  const startNewGameWithConfig = async (gameMode: 'classic' | 'speed', wordSize: number, maxTries: number) => {
     if (gameMode === 'classic') {
       await createClassicGame(wordSize, maxTries);
     } else {
-      await createCustomGame(wordSize, maxTries);
+      await createSpeedGame(wordSize, maxTries);
     }
     setShowGame(true);
   };
 
-  const startCustomGame = async (wordSize: number, maxTries: number) => {
-    await createCustomGame(wordSize, maxTries);
+  const startSpeedGame = async (wordSize: number, maxTries: number) => {
+    await createSpeedGame(wordSize, maxTries);
     setShowGame(true);
   };
 
@@ -74,7 +74,7 @@ function AppContent() {
         />
       ) : (
         <Home 
-          onStartCustomGame={startCustomGame} 
+          onStartSpeedGame={startSpeedGame} 
           onStartClassicGame={startClassicGame} 
         />
       )}

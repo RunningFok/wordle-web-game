@@ -3,14 +3,14 @@ import { GameState, CreateGameStateResponse, GuessResult } from '../types/core';
 import { apiService, PlayGameStateError } from '../services/api';
 import { getRandomWord } from '../helpers/gameLogic';
 
-type GameMode = 'classic' | 'custom';
+type GameMode = 'classic' | 'speed';
 
 interface GameContextType {
   gameState: GameState | null;
   loading: boolean;
   error: string | null;
   createNewGame: (mode: GameMode) => Promise<void>;
-  createCustomGame: (wordSize: number, maxTries: number) => Promise<void>;
+  createSpeedGame: (wordSize: number, maxTries: number) => Promise<void>;
   createClassicGame: (wordSize: number, maxTries: number) => Promise<void>;
   makeGuess: (guessWord: string) => Promise<void>;
   leaveGame: () => Promise<void>;
@@ -67,7 +67,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         };
         setGameState(newGameState);
         
-      } else if (mode === 'custom') {
+      } else if (mode === 'speed') {
         const response: CreateGameStateResponse = await apiService.createGameState();
         
         const newGameState: GameState = {
@@ -78,7 +78,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           targetWord: response.targetWord,
           maxTries: response.maxTries,
           wordSize: response.wordSize || 5,
-          mode: 'custom',
+          mode: 'speed',
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
         };
@@ -92,7 +92,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const createCustomGame = useCallback(async (wordSize: number, maxTries: number) => {
+  const createSpeedGame = useCallback(async (wordSize: number, maxTries: number) => {
     setLoading(true);
     setError(null);
     
@@ -107,14 +107,14 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         targetWord: response.targetWord,
         maxTries: response.maxTries,
         wordSize: response.wordSize || wordSize,
-        mode: 'custom',
+        mode: 'speed',
         createdAt: response.createdAt,
         updatedAt: response.updatedAt,
       };
       setGameState(newGameState);
       
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create custom game');
+      setError(err instanceof Error ? err.message : 'Failed to create speed game');
     } finally {
       setLoading(false);
     }
@@ -185,7 +185,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           gameStatus: isGameWon ? 'won' : isGameLost ? 'lost' : 'playing'
         }) : null);
         
-      } else if (gameState.mode === 'custom') {
+      } else if (gameState.mode === 'speed') {
         if (!gameState.id) {
           throw new Error('Game ID is required for API-based modes');
         }
@@ -227,7 +227,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     try {
       if (gameState.mode === 'classic') {
         setGameState(null);
-      } else if (gameState.mode === 'custom') {
+      } else if (gameState.mode === 'speed') {
         if (!gameState.id) {
           throw new Error('Game ID is required for API-based modes');
         }
@@ -246,7 +246,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     loading,
     error,
     createNewGame,
-    createCustomGame,
+    createSpeedGame,
     createClassicGame,
     makeGuess,
     leaveGame,

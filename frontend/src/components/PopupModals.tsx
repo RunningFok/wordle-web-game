@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 interface CustomGameModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onStartCustomGame: (wordSize: number, maxTries: number) => void;
+  onStartSpeedGame: (wordSize: number, maxTries: number) => void;
   onStartClassicGame: (wordSize: number, maxTries: number) => void;
-  mode: 'classic' | 'custom';
+  mode: 'classic' | 'speed';
 }
 
 interface InvalidWordModalProps {
@@ -62,7 +62,7 @@ export const InvalidWordModal: React.FC<InvalidWordModalProps> = ({
 export const CustomGameModal: React.FC<CustomGameModalProps> = ({ 
   isOpen, 
   onClose, 
-  onStartCustomGame,
+  onStartSpeedGame,
   onStartClassicGame,
   mode,
 }) => {
@@ -73,7 +73,7 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
     if (mode === 'classic') {
       onStartClassicGame(wordSize, maxTries);
     } else {
-      onStartCustomGame(wordSize, maxTries);
+      onStartSpeedGame(wordSize, maxTries);
     }
     onClose();
   };
@@ -83,7 +83,7 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
   return (
     <div className="custom-game-modal">
       <div className="custom-game-modal-content">
-        <h2>{mode === 'classic' ? 'Classic Game Settings' : 'Custom Game Settings'}</h2>
+        <h2>{mode === 'classic' ? 'Classic Game Settings' : 'Speed Game Settings'}</h2>
         
         <div className="setting-group">
           <h3>Word Size</h3>

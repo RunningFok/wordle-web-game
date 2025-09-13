@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { CustomGameModal } from './PopupModals';
 
 interface HomePageProps {
-  onStartCustomGame: (wordSize: number, maxTries: number) => void;
+  onStartSpeedGame: (wordSize: number, maxTries: number) => void;
   onStartClassicGame: (wordSize: number, maxTries: number) => void;
 }
 
 export const Home: React.FC<HomePageProps> = ({
-  onStartCustomGame,
+  onStartSpeedGame,
   onStartClassicGame,
 }) => {
   const [showCustomGameModal, setShowCustomGameModal] = useState(false);
-  const [modalMode, setModalMode] = useState<'classic' | 'custom'>('classic');
+  const [modalMode, setModalMode] = useState<'classic' | 'speed'>('classic');
     return (
       <div className="App">
         <header className="App-header">
@@ -30,15 +30,15 @@ export const Home: React.FC<HomePageProps> = ({
                   Classic Mode
                 </button>
               </div>
-              <div className="game-card custom-card">
+              <div className="game-card speed-card">
                 <button 
-                  className="game-button custom-button"
+                  className="game-button speed-button"
                   onClick={() => {
-                    setModalMode('custom');
                     setShowCustomGameModal(true);
+                    setModalMode('speed');
                   }}
                 >
-                  Custom Mode
+                  Speed Mode
                 </button>
               </div>
             </div>
@@ -46,7 +46,7 @@ export const Home: React.FC<HomePageProps> = ({
           <CustomGameModal
             isOpen={showCustomGameModal}
             onClose={() => setShowCustomGameModal(false)}
-            onStartCustomGame={onStartCustomGame}
+            onStartSpeedGame={onStartSpeedGame}
             onStartClassicGame={onStartClassicGame}
             mode={modalMode}
           />
