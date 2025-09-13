@@ -1,2 +1,7 @@
 POST http://localhost:8080/gamestates
 content-type: application/json
+
+{
+    "maxTries": 6,
+    "wordSize": 6
+}

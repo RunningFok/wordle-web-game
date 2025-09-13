@@ -13,9 +13,23 @@ import (
 func createGameState(context *gin.Context) {
 	fmt.Println("Creating wordle")
 	
-	gameState, err := models.CreateGameState()
+	var request struct {
+		MaxTries int `json:"maxTries"`
+		WordSize int `json:"wordSize"`
+	}
+	
+	request.MaxTries = 6
+	request.WordSize = 5
+	
+	if context.Request.ContentLength > 0 {
+		if err := context.ShouldBindJSON(&request); err != nil {
+			fmt.Printf("Warning: Failed to parse request body, using defaults: %v\n", err)
+		}
+	}
+	
+	gameState, err := models.CreateGameState(request.MaxTries, request.WordSize)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create game state: " + err.Error()})
+		context.JSON(http.StatusBadRequest, gin.H{"error": "Failed to create game state: " + err.Error()})
 		return
 	}
 	

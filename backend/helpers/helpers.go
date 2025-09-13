@@ -24,8 +24,18 @@ func GetNextID(tableName string) (int64, error) {
 	return 1, nil
 }
 
-func GetRandomWord() string {
-	return data.WordList[rand.Intn(len(data.WordList))]
+func GetRandomWord(wordSize int) string {
+	switch wordSize {
+	case 4:
+		return data.FourLetterWordList[rand.Intn(len(data.FourLetterWordList))]
+	case 5:
+		return data.FiveLetterWordList[rand.Intn(len(data.FiveLetterWordList))]
+	case 6:
+		return data.SixLetterWordList[rand.Intn(len(data.SixLetterWordList))]
+	default:
+		return data.FiveLetterWordList[rand.Intn(len(data.FiveLetterWordList))]
+	}
+}
 
 func IsWordInList(word string) bool {
 	word = strings.ToUpper(strings.TrimSpace(word))

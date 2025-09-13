@@ -27,14 +27,22 @@ type GameState struct {
 	GameStatus string    `json:"gameStatus"`
 	Mode string    `json:"mode"`
 	MaxTries    int       `json:"maxTries"`
+	WordSize    int       `json:"wordSize"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
-func CreateGameState() (GameState, error) {
+func CreateGameState(maxTries int, wordSize int) (GameState, error) {
+	if maxTries < 5 || maxTries > 7 {
+		return GameState{}, fmt.Errorf("maxTries must be between 5 and 7, got %d", maxTries)
+	}
+	if wordSize < 4 || wordSize > 6 {
+		return GameState{}, fmt.Errorf("wordSize must be between 4 and 6, got %d", wordSize)
+	}
+	
 	now := time.Now()
 	
-	randomWord := helpers.GetRandomWord()
+	randomWord := helpers.GetRandomWord(wordSize)
 	nextID, err := helpers.GetNextID("game_states")
 	if err != nil {
 		return GameState{}, err
@@ -46,7 +54,8 @@ func CreateGameState() (GameState, error) {
 		Tries: []GuessResult{},
 		GameStatus: "playing",
 		Mode: "classic",
-		MaxTries:   6,
+		MaxTries:   maxTries,
+		WordSize:   wordSize,
 		CreatedAt:  now,
 		UpdatedAt:  now,
 	}, nil
@@ -59,11 +68,11 @@ func SaveGameState(gameState GameState) error {
 	}
 	
 	query := `
-		INSERT INTO game_states (id, target_word, tries, game_status, mode, max_tries, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO game_states (id, target_word, tries, game_status, mode, max_tries, word_size, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`
 	
-	_, err = database.DB.Exec(query, gameState.ID, gameState.TargetWord, string(triesJSON), gameState.GameStatus, gameState.Mode, gameState.MaxTries, gameState.CreatedAt, gameState.UpdatedAt)
+	_, err = database.DB.Exec(query, gameState.ID, gameState.TargetWord, string(triesJSON), gameState.GameStatus, gameState.Mode, gameState.MaxTries, gameState.WordSize, gameState.CreatedAt, gameState.UpdatedAt)
 	if err != nil {
 		return fmt.Errorf("failed to save game state: %v", err)
 	}
@@ -75,7 +84,7 @@ func GetAllGameStates() ([]GameState, error) {
 	var gameStates []GameState
 	
 	query := `
-		SELECT id, target_word, tries, game_status, mode, max_tries, created_at, updated_at
+		SELECT id, target_word, tries, game_status, mode, max_tries, word_size, created_at, updated_at
 		FROM game_states
 	`
 	
@@ -96,6 +105,7 @@ func GetAllGameStates() ([]GameState, error) {
 			&gameState.GameStatus,
 			&gameState.Mode,
 			&gameState.MaxTries,
+			&gameState.WordSize,
 			&gameState.CreatedAt,
 			&gameState.UpdatedAt,
 		)
@@ -117,7 +127,7 @@ func GetGameStateByID(gameStateID int64) (GameState, error) {
 	var gameState GameState
 	
 	query := `
-		SELECT id, target_word, tries, game_status, mode, max_tries, created_at, updated_at
+		SELECT id, target_word, tries, game_status, mode, max_tries, word_size, created_at, updated_at
 		FROM game_states 
 		WHERE id = ?
 	`
@@ -132,6 +142,7 @@ func GetGameStateByID(gameStateID int64) (GameState, error) {
 		&gameState.GameStatus,
 		&gameState.Mode,
 		&gameState.MaxTries,
+		&gameState.WordSize,
 		&gameState.CreatedAt,
 		&gameState.UpdatedAt,
 	)

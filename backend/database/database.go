@@ -38,6 +38,7 @@ func createTables() {
 		game_status TEXT NOT NULL,
 		mode TEXT NOT NULL,
 		max_tries INTEGER NOT NULL,
+		word_size INTEGER NOT NULL DEFAULT 5,
 		created_at DATETIME NOT NULL,
 		updated_at DATETIME NOT NULL
 	)
