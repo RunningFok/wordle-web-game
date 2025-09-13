@@ -11,6 +11,7 @@ interface GameContextType {
   error: string | null;
   createNewGame: (mode: GameMode) => Promise<void>;
   createCustomGame: (wordSize: number, maxTries: number) => Promise<void>;
+  createClassicGame: (wordSize: number, maxTries: number) => Promise<void>;
   makeGuess: (guessWord: string) => Promise<void>;
   leaveGame: () => Promise<void>;
   clearError: () => void;
@@ -114,6 +115,29 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create custom game');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const createClassicGame = useCallback(async (wordSize: number, maxTries: number) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const newGameState: GameState = {
+        currentGuessWord: '',
+        tries: [],
+        gameStatus: 'playing',
+        targetWord: getRandomWord(wordSize),
+        maxTries: maxTries,
+        wordSize: wordSize,
+        mode: 'classic'
+      };
+      setGameState(newGameState);
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create classic game');
     } finally {
       setLoading(false);
     }
@@ -223,6 +247,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     error,
     createNewGame,
     createCustomGame,
+    createClassicGame,
     makeGuess,
     leaveGame,
     clearError,

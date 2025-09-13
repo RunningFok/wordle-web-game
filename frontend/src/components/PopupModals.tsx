@@ -4,6 +4,8 @@ interface CustomGameModalProps {
   isOpen: boolean;
   onClose: () => void;
   onStartCustomGame: (wordSize: number, maxTries: number) => void;
+  onStartClassicGame: (wordSize: number, maxTries: number) => void;
+  mode: 'classic' | 'custom';
 }
 
 interface InvalidWordModalProps {
@@ -61,12 +63,18 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
   isOpen, 
   onClose, 
   onStartCustomGame,
+  onStartClassicGame,
+  mode,
 }) => {
   const [wordSize, setWordSize] = useState(5);
   const [maxTries, setMaxTries] = useState(6);
 
   const handleStartGame = () => {
-    onStartCustomGame(wordSize, maxTries);
+    if (mode === 'classic') {
+      onStartClassicGame(wordSize, maxTries);
+    } else {
+      onStartCustomGame(wordSize, maxTries);
+    }
     onClose();
   };
 
@@ -75,7 +83,7 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
   return (
     <div className="custom-game-modal">
       <div className="custom-game-modal-content">
-        <h2>Custom Game Settings</h2>
+        <h2>{mode === 'classic' ? 'Classic Game Settings' : 'Custom Game Settings'}</h2>
         
         <div className="setting-group">
           <h3>Word Size</h3>
