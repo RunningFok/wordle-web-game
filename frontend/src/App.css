@@ -540,8 +540,7 @@
   }
 }
 
-/* Custom Game Modal Styles */
-.custom-game-modal {
+.game-config-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -555,7 +554,7 @@
   animation: fadeIn 0.3s ease;
 }
 
-.custom-game-modal-content {
+.game-config-modal-content {
   background-color: #476EAE;
   border-radius: 12px;
   padding: 30px;
@@ -566,7 +565,7 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
-.custom-game-modal-content h2 {
+.game-config-modal-content h2 {
   margin: 0 0 25px 0;
   font-size: 1.8rem;
   text-align: center;

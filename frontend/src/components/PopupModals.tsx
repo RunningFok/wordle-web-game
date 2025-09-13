@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-interface CustomGameModalProps {
+interface GameConfigModalProps {
   isOpen: boolean;
   onClose: () => void;
   onStartSpeedGame: (wordSize: number, maxTries: number) => void;
@@ -59,7 +59,7 @@ export const InvalidWordModal: React.FC<InvalidWordModalProps> = ({
   );
 };
 
-export const CustomGameModal: React.FC<CustomGameModalProps> = ({ 
+export const GameConfigModal: React.FC<GameConfigModalProps> = ({ 
   isOpen, 
   onClose, 
   onStartSpeedGame,
@@ -81,8 +81,8 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="custom-game-modal">
-      <div className="custom-game-modal-content">
+    <div className="game-config-modal">
+      <div className="game-config-modal-content">
         <h2>{mode === 'classic' ? 'Classic Game Settings' : 'Speed Game Settings'}</h2>
         
         <div className="setting-group">
