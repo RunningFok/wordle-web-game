@@ -28,6 +28,15 @@ function AppContent() {
     setShowGame(true);
   };
 
+  const startNewGameWithConfig = async (gameMode: 'classic' | 'custom', wordSize: number, maxTries: number) => {
+    if (gameMode === 'classic') {
+      await createClassicGame(wordSize, maxTries);
+    } else {
+      await createCustomGame(wordSize, maxTries);
+    }
+    setShowGame(true);
+  };
+
   const startCustomGame = async (wordSize: number, maxTries: number) => {
     await createCustomGame(wordSize, maxTries);
     setShowGame(true);
@@ -40,7 +49,7 @@ function AppContent() {
 
   const playAgainGame = async () => {
     if (gameState) {
-      await createNewGame(gameState.mode);
+      await startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries);
       setShowGameFinish(false);
     }
   };
@@ -60,7 +69,7 @@ function AppContent() {
       {showGame && gameState ? (
         <GamePage
           gameState={gameState}
-          onNewGame={() => startNewGame(gameState.mode)}
+          onNewGame={() => startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries)}
           onBackToHome={goBackToHome}
         />
       ) : (
