@@ -4,6 +4,7 @@ import { Home } from './components/Home';
 import { GamePage } from './components/GamePage';
 import { GameFinishModal } from './components/PopupModals';
 import { GameProvider, useGame } from './contexts/GameContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function AppContent() {
   const { gameState, showGame, createSpeedGame, createClassicGame, error, clearError, backToHome } = useGame();
@@ -50,15 +51,59 @@ function AppContent() {
 
   return (
     <div>
-      {showGame && gameState ? (
-        <GamePage
-          gameState={gameState}
-          onNewGame={() => startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries)}
-          onBackToHome={goBackToHome}
-        />
-      ) : (
-        <Home />
-      )}
+      <AnimatePresence mode="wait">
+        {showGame && gameState ? (
+          <motion.div
+            key="game"
+            initial={{ 
+              filter: "blur(15px)",
+              x: 100,
+              opacity: 0.25
+            }}
+            animate={{ 
+              filter: "blur(0px)",
+              x: 0,
+              opacity: 1
+            }}
+            exit={{ 
+              filter: "blur(15px)",
+              x: -100,
+              opacity: 0.25
+            }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            style={{ willChange: "filter, transform, opacity" }}
+          >
+            <GamePage
+              gameState={gameState}
+              onNewGame={() => startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries)}
+              onBackToHome={goBackToHome}
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="home"
+            initial={{ 
+              filter: "blur(15px)",
+              x: -100,
+              opacity: 0.25
+            }}
+            animate={{ 
+              filter: "blur(0px)",
+              x: 0,
+              opacity: 1
+            }}
+            exit={{ 
+              filter: "blur(15px)",
+              x: 100,
+              opacity: 0.25
+            }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            style={{ willChange: "filter, transform, opacity" }}
+          >
+            <Home />
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {gameState && gameState.targetWord && (
         <GameFinishModal
