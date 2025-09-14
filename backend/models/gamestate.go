@@ -53,7 +53,7 @@ func CreateGameState(maxTries int, wordSize int) (GameState, error) {
 		TargetWord: randomWord,
 		Tries: []GuessResult{},
 		GameStatus: "playing",
-		Mode: "classic",
+		Mode: "speed",
 		MaxTries:   maxTries,
 		WordSize:   wordSize,
 		CreatedAt:  now,
@@ -253,6 +253,26 @@ func (gs *GameState) LeaveGameState() error {
 	if err != nil {
 		return fmt.Errorf("failed to leave game state: %v", err)
 	}
+	
+	return nil
+}
+
+func (gs *GameState) LoseGameState() error {
+	updatedAt := time.Now()
+	
+	query := `
+		UPDATE game_states 
+		SET game_status = ?, updated_at = ?
+		WHERE id = ?
+	`
+	
+	_, err := database.DB.Exec(query, "lost", updatedAt, gs.ID)
+	if err != nil {
+		return fmt.Errorf("failed to set game state status to lose: %v", err)
+	}
+	
+	gs.GameStatus = "lost"
+	gs.UpdatedAt = updatedAt
 	
 	return nil
 }
