@@ -53,7 +53,7 @@ function AppContent() {
       {showGame && gameState ? (
         <GamePage
           gameState={gameState}
-          onNewGame={() => startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries)}
+          onNewGame={() => startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries, gameState.timeLimit)}
           onBackToHome={goBackToHome}
         />
       ) : (
