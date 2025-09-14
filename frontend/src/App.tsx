@@ -51,15 +51,6 @@ function AppContent() {
 
   return (
     <div>
-      {showGame && gameState ? (
-        <GamePage
-          gameState={gameState}
-          onNewGame={() => startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries, gameState.timeLimit)}
-          onBackToHome={goBackToHome}
-        />
-      ) : (
-        <Home />
-      )}
       <AnimatePresence mode="wait">
         {showGame && gameState ? (
           <motion.div

@@ -39,7 +39,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameState }) => {
         setCurrentGuessWord(prev => prev + key);
       }
     }
-  }, [gameState.gameStatus, currentGuessWord, submitGuess, loading]);
+  }, [gameState.gameStatus, gameState.wordSize, currentGuessWord, submitGuess, loading]);
 
   useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {

@@ -296,7 +296,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [gameState]);
+  }, [gameState, resetTimer]);
 
   const leaveGame = useCallback(async () => {
     if (!gameState) {
