@@ -456,6 +456,15 @@
     min-width: 40px;
     max-width: 45px;
   }
+  
+  .timer-container {
+    padding: 10px 18px !important;
+  }
+  
+  .timer-value {
+    font-size: 28px !important;
+    letter-spacing: 1px !important;
+  }
 }
 
 .invalid-word-modal {
