@@ -6,8 +6,7 @@ import { GameFinishModal } from './components/PopupModals';
 import { GameProvider, useGame } from './contexts/GameContext';
 
 function AppContent() {
-  const { gameState, createNewGame, createSpeedGame, createClassicGame, error, clearError } = useGame();
-  const [showGame, setShowGame] = useState<boolean>(false);
+  const { gameState, showGame, createSpeedGame, createClassicGame, error, clearError, backToHome } = useGame();
   const [showGameFinish, setShowGameFinish] = useState(false);
 
   useEffect(() => {
@@ -19,13 +18,8 @@ function AppContent() {
   }, [gameState?.gameStatus]);
 
   const goBackToHome = () => {
-    setShowGame(false);
+    backToHome();
     setShowGameFinish(false);
-  };
-
-  const startNewGame = async (gameMode: 'classic' | 'speed') => {
-    await createNewGame(gameMode);
-    setShowGame(true);
   };
 
   const startNewGameWithConfig = async (gameMode: 'classic' | 'speed', wordSize: number, maxTries: number, timeLimit?: number) => {
@@ -34,18 +28,8 @@ function AppContent() {
     } else {
       await createSpeedGame(wordSize, maxTries, timeLimit || 45);
     }
-    setShowGame(true);
   };
 
-  const startSpeedGame = async (wordSize: number, maxTries: number, timeLimit: number) => {
-    await createSpeedGame(wordSize, maxTries, timeLimit);
-    setShowGame(true);
-  };
-
-  const startClassicGame = async (wordSize: number, maxTries: number) => {
-    await createClassicGame(wordSize, maxTries);
-    setShowGame(true);
-  };
 
   const playAgainGame = async () => {
     if (gameState) {
@@ -73,10 +57,7 @@ function AppContent() {
           onBackToHome={goBackToHome}
         />
       ) : (
-        <Home 
-          onStartSpeedGame={startSpeedGame} 
-          onStartClassicGame={startClassicGame} 
-        />
+        <Home />
       )}
       
       {gameState && gameState.targetWord && (

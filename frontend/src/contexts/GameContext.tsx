@@ -9,6 +9,7 @@ interface GameContextType {
   gameState: GameState | null;
   loading: boolean;
   error: string | null;
+  showGame: boolean;
   createNewGame: (mode: GameMode) => Promise<void>;
   createSpeedGame: (wordSize: number, maxTries: number, timeLimit: number) => Promise<void>;
   createClassicGame: (wordSize: number, maxTries: number) => Promise<void>;
@@ -20,6 +21,7 @@ interface GameContextType {
   clearInvalidWordPopup: () => void;
   timeLeft: number;
   resetTimer: () => void;
+  backToHome: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -40,6 +42,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showGame, setShowGame] = useState(false);
   const [showInvalidWordPopup, setShowInvalidWordPopup] = useState(false);
   const [invalidWord, setInvalidWord] = useState('');
   const [timeLeft, setTimeLeft] = useState(45);
@@ -52,6 +55,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const clearInvalidWordPopup = useCallback(() => {
     setShowInvalidWordPopup(false);
     setInvalidWord('');
+  }, []);
+
+  const backToHome = useCallback(() => {
+    setShowGame(false);
   }, []);
 
   const resetTimer = useCallback(() => {
@@ -145,6 +152,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         setGameState(newGameState);
       }
       
+      setShowGame(true);
+      
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create new game');
     } finally {
@@ -176,6 +185,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       
       setTimeLeft(timeLimit);
       
+      setShowGame(true);
+      
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create speed game');
     } finally {
@@ -198,6 +209,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         mode: 'classic'
       };
       setGameState(newGameState);
+      
+      setShowGame(true);
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create classic game');
@@ -311,6 +324,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     gameState,
     loading,
     error,
+    showGame,
     createNewGame,
     createSpeedGame,
     createClassicGame,
@@ -322,6 +336,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     clearInvalidWordPopup,
     timeLeft,
     resetTimer,
+    backToHome,
   };
 
   return (
