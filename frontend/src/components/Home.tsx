@@ -1,10 +1,11 @@
 import { MenuTabs } from './MenuTabs';
+import { TypewriterTitle } from './TypeWriterTitle';
 
 export const Home = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="App-title">Wordle!</div>
+        <TypewriterTitle />
       </header>
       <main className="homepage-container">
         <MenuTabs />

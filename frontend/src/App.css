@@ -6,17 +6,24 @@
 }
 
 .App-header {
-  padding: 10px;
-  padding-top: 50px;
+  padding: 80px 0 0 0;
   color: white;
 }
 
 .App-title {
-  padding: 35px 16px;
-  border-radius: 6px;
-  font-size: 3rem;
+  padding: 0 0 0 0;
+  margin-bottom: 0;
+  font-size: 5rem;
   color: #FFFFFF;
-  font-weight: bold;
+  font-weight: 900;
+  font-family: 'Arial Black', 'Helvetica', 'sans-serif';
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .homepage-container {
@@ -142,7 +149,7 @@
 
 @media (min-width: 768px) {
   .App-header {
-    padding-top: 180px;
+    padding: 100px 0 0 0;
   }
 }
 
@@ -445,7 +452,13 @@
 
 @media (max-width: 767px) {
   .App-header {
-    padding-top: 20px;
+    padding: 60px 0 0 0;
+  }
+  
+  .App-title {
+    letter-spacing: 3px;
+    padding: 0;
+    margin-bottom: 0;
   }
   
   .game-header {
@@ -1540,6 +1553,16 @@
 }
 
 @media (max-width: 480px) {
+  .App-header {
+    padding: 40px 0 0 0;
+  }
+  
+  .App-title {
+    letter-spacing: 2px;
+    padding: 0;
+    margin-bottom: 0;
+  }
+  
   .tabs-container {
     margin: 0 2px;
     padding: 8px;
