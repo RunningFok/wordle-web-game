@@ -20,7 +20,7 @@ export const GamePage: React.FC<GamePageProps> = ({
         <header className="App-header">
           <div className="game-header">
             <div className="game-title-section">
-              <div className="mode-indicator">
+              <div className={`mode-indicator ${gameState.mode === 'classic' ? 'classic-mode' : 'speed-mode'}`}>
                 {gameState.mode === 'classic' ? 'Classic Mode' : 'Speed Mode'}
               </div>
               {gameState.mode === 'speed' && (

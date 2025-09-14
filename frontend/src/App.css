@@ -233,6 +233,23 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+.mode-indicator.classic-mode {
+  font-family: 'Times New Roman', 'Georgia', 'serif';
+  font-weight: normal;
+  font-style: italic;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.mode-indicator.speed-mode {
+  font-family: 'Arial Black', 'Helvetica', 'sans-serif';
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px rgba(141, 240, 204, 0.5);
+  animation: speedGlow 2s ease-in-out infinite alternate;
+}
+
 .game-container {
   max-width: 600px;
   margin: 0 auto;
@@ -438,6 +455,14 @@
   .mode-indicator {
     font-size: 1.5rem;
     padding: 10px 15px;
+  }
+  
+  .mode-indicator.classic-mode {
+    letter-spacing: 1px;
+  }
+  
+  .mode-indicator.speed-mode {
+    letter-spacing: 2px;
   }
   
   .back-button, .new-game-button {
@@ -886,6 +911,20 @@
   font-weight: bold;
 }
 
+.tab-button[data-tab="classic"] {
+  font-family: 'Times New Roman', 'Georgia', 'serif';
+  font-weight: normal;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.tab-button[data-tab="speed"] {
+  font-family: 'Arial Black', 'Helvetica', 'sans-serif';
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
 .tab-indicator {
   position: absolute;
   top: 4px;
@@ -897,6 +936,16 @@
   z-index: -1;
   box-shadow: 0 4px 15px rgba(72, 179, 175, 0.3);
   pointer-events: none;
+}
+
+.tab-indicator[data-tab="speed"] {
+  background: linear-gradient(135deg, #A7E399, #8BC34A);
+  box-shadow: 0 4px 15px rgba(167, 227, 153, 0.3);
+}
+
+.tab-indicator[data-tab="rules"] {
+  background: linear-gradient(135deg, #4A90E2, #2E5BBA);
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
 }
 
 .tab-content {
@@ -919,6 +968,47 @@
   font-size: 2rem;
   color: #FFFFFF;
   font-weight: bold;
+}
+
+.game-config-content h2.classic-mode {
+  font-family: 'Times New Roman', 'Georgia', 'serif';
+  font-weight: normal;
+  font-style: italic;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.game-config-content h2.speed-mode {
+  font-family: 'Arial Black', 'Helvetica', 'sans-serif';
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px rgba(141, 240, 204, 0.5);
+  animation: speedGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes speedGlow {
+  0% { text-shadow: 0 0 10px rgba(141, 240, 204, 0.5); }
+  100% { text-shadow: 0 0 20px rgba(141, 240, 204, 0.8), 0 0 30px rgba(141, 240, 204, 0.3); }
+}
+
+.rules-section h3.classic-mode {
+  font-family: 'Times New Roman', 'Georgia', 'serif';
+  font-weight: normal;
+  font-style: italic;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.rules-section h3.speed-mode {
+  font-family: 'Arial Black', 'Helvetica', 'sans-serif';
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(141, 240, 204, 0.4);
+  animation: speedGlow 2s ease-in-out infinite alternate;
 }
 
 .game-config-content p {
@@ -1021,6 +1111,16 @@
   z-index: -1;
   box-shadow: 0 2px 8px rgba(72, 179, 175, 0.3);
   pointer-events: none;
+}
+
+.setting-tab-indicator[data-mode="speed"] {
+  background: linear-gradient(135deg, #A7E399, #8BC34A);
+  box-shadow: 0 2px 8px rgba(167, 227, 153, 0.3);
+}
+
+.setting-tab-indicator[data-mode="classic"] {
+  background: linear-gradient(135deg, #48B3AF, #3A9B97);
+  box-shadow: 0 2px 8px rgba(72, 179, 175, 0.3);
 }
 
 .rules-content {
@@ -1182,7 +1282,7 @@
 }
 
 .rules-content h3 {
-  color: #48B3AF;
+  color: #FFFFFF;
   margin: 15px 0 10px 0;
   font-size: 1.3rem;
   font-weight: bold;
@@ -1278,6 +1378,14 @@
     font-size: 0.9rem;
   }
   
+  .tab-button[data-tab="classic"] {
+    letter-spacing: 0.5px;
+  }
+  
+  .tab-button[data-tab="speed"] {
+    letter-spacing: 1px;
+  }
+  
   .tab-indicator {
     top: 3px;
     left: 3px;
@@ -1298,6 +1406,16 @@
   .game-config-content h2 {
     font-size: 1.4rem;
     margin-bottom: 10px;
+  }
+  
+  .game-config-content h2.classic-mode {
+    letter-spacing: 1px;
+    font-size: 1.3rem;
+  }
+  
+  .game-config-content h2.speed-mode {
+    letter-spacing: 2px;
+    font-size: 1.2rem;
   }
   
   .game-config-content p {
@@ -1338,6 +1456,14 @@
   .rules-content h3 {
     font-size: 1.1rem;
     margin: 10px 0 8px 0;
+  }
+  
+  .rules-section h3.classic-mode {
+    letter-spacing: 0.5px;
+  }
+  
+  .rules-section h3.speed-mode {
+    letter-spacing: 1px;
   }
   
   .rules-content p, .rules-content li {
@@ -1424,12 +1550,30 @@
     font-size: 0.8rem;
   }
   
+  .tab-button[data-tab="classic"] {
+    letter-spacing: 0.3px;
+  }
+  
+  .tab-button[data-tab="speed"] {
+    letter-spacing: 0.5px;
+  }
+  
   .tab-content {
     min-height: 250px;
   }
   
   .game-config-content h2 {
     font-size: 1.2rem;
+  }
+  
+  .game-config-content h2.classic-mode {
+    letter-spacing: 0.5px;
+    font-size: 1.1rem;
+  }
+  
+  .game-config-content h2.speed-mode {
+    letter-spacing: 1px;
+    font-size: 1rem;
   }
   
   .setting-tab-button {
@@ -1446,6 +1590,14 @@
   
   .rules-content h2 {
     font-size: 1.2rem;
+  }
+  
+  .rules-section h3.classic-mode {
+    letter-spacing: 0.3px;
+  }
+  
+  .rules-section h3.speed-mode {
+    letter-spacing: 0.5px;
   }
   
   .rules-section {

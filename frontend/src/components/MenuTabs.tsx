@@ -48,12 +48,14 @@ export const MenuTabs: React.FC<MenuTabsProps> = ({
           <button
             key={tab.id}
             className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            data-tab={tab.id}
             onClick={() => handleTabClick(tab.id)}
           >
             {tab.label}
             {activeTab === tab.id && (
               <motion.div
                 className="tab-indicator"
+                data-tab={tab.id}
                 layoutId="activeTab"
                 transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
               />

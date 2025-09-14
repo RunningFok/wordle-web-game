@@ -48,9 +48,9 @@ export const MenuContent: React.FC<MenuContentProps> = ({
 
   const getTitle = () => {
     switch (mode) {
-      case 'classic': return 'Classic Mode';
-      case 'speed': return 'Speed Mode';
-      case 'rules': return 'How to Play Wordle';
+      case 'classic': return <h2 className="classic-mode">Classic Mode</h2>;
+      case 'speed': return <h2 className="speed-mode">Speed Mode</h2>;
+      case 'rules': return <h2>How to Play Wordle</h2>;
       default: return '';
     }
   };
@@ -72,10 +72,6 @@ export const MenuContent: React.FC<MenuContentProps> = ({
 
   const getLayoutIdPrefix = () => {
     return mode === 'speed' ? 'speed' : 'classic';
-  };
-
-  const getButtonText = () => {
-    return mode === 'speed' ? 'Start Speed Game' : 'Start Classic Game';
   };
 
   const getButtonClassName = () => {
@@ -174,7 +170,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                   className="accordion-content"
                 >
                   <div className="rules-section">
-                    <h3>Classic Mode</h3>
+                    <h3 className="classic-mode">Classic Mode</h3>
                     <p>Take your time to think and guess the word. No time pressure!</p>
                     <ul>
                       <li>Configure word size (4-6 letters)</li>
@@ -183,7 +179,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                     </ul>
                   </div>
                   <div className="rules-section">
-                    <h3>Speed Mode</h3>
+                    <h3 className="speed-mode">Speed Mode</h3>
                     <p>Race against the clock to solve the word as quickly as possible!</p>
                     <ul>
                       <li>Configure word size (4-6 letters)</li>
@@ -210,7 +206,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
       transition={{ duration: 0.3 }}
       className="game-config-content"
     >
-      <h2>{getTitle()}</h2>
+      {getTitle()}
       <p>{getDescription()}</p>
       
       <div className="smart-settings-container">
@@ -253,6 +249,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                         {wordSize === size && (
                           <motion.div
                             className="setting-tab-indicator"
+                            data-mode={mode}
                             layoutId={`wordSize-${getLayoutIdPrefix()}-indicator`}
                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                           />
@@ -277,6 +274,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                         {maxTries === tries && (
                           <motion.div
                             className="setting-tab-indicator"
+                            data-mode={mode}
                             layoutId={`maxTries-${getLayoutIdPrefix()}-indicator`}
                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                           />
@@ -302,6 +300,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
                           {timeLimit === seconds && (
                             <motion.div
                               className="setting-tab-indicator"
+                              data-mode={mode}
                               layoutId="timeLimit-indicator"
                               transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                             />
@@ -322,7 +321,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
           className={getButtonClassName()}
           onClick={handleStartGame}
         >
-          {getButtonText()}
+          Start Game
         </button>
       </div>
     </motion.div>
