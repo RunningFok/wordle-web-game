@@ -154,49 +154,59 @@
 }
 
 .back-button {
-  top: 10px;
-  left: 0px;
-  padding: 8px 12px;
-  background-color: #E74C3C;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #E74C3C, #C0392B);
   color: white;
   font-weight: bold;
   text-align: center;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   width: 150px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .back-button:hover {
-  background-color: #C0392B;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+  background: linear-gradient(135deg, #C0392B, #A93226);
 }
 
 .new-game-button {
-  top: 10px;
-  left: 0px;
-  padding: 8px 12px;
-  background-color: #48B3AF;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #48B3AF, #3A9B97);
   color: white;
   font-weight: bold;
   text-align: center;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   width: 150px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(72, 179, 175, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .new-game-button:hover {
-  background-color: #48B3AF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 179, 175, 0.4);
+  background: linear-gradient(135deg, #3A9B97, #2A7B77);
 }
 
 .mode-indicator {
-  padding: 10px 8px;
-  border-radius: 6px;
+  padding: 15px 20px;
+  border-radius: 12px;
   font-size: 2rem;
   color: #FFFFFF;
   font-weight: bold;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .game-container {
@@ -261,23 +271,31 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 8px;
   margin: 20px 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .guess-row {
   display: flex;
-  gap: 1px;
+  gap: 6px;
   justify-content: center;
   align-items: center;
 }
 
 .letter-tile {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #3A3A3C;
-  background-color: #FFFFFF;
-  color: black;
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
   font-size: 1.5rem;
   font-weight: bold;
   display: flex;
@@ -285,80 +303,158 @@
   justify-content: center;
   text-transform: uppercase;
   transition: all 0.3s ease;
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
 }
 
 .letter-tile.correct {
   background-color: #538D4E;
   border-color: #538D4E;
+  box-shadow: 0 0 10px rgba(83, 141, 78, 0.5);
 }
 
 .letter-tile.incorrect-position {
   background-color: #B59F3B;
   border-color: #B59F3B;
+  box-shadow: 0 0 10px rgba(181, 159, 59, 0.5);
 }
 
 .letter-tile.incorrect {
   background-color: #3A3A3C;
   border-color: #3A3A3C;
+  box-shadow: 0 0 10px rgba(58, 58, 60, 0.5);
 }
 
 .letter-tile.current {
-  border-color: #565758;
+  border-color: #48B3AF;
+  background-color: rgba(72, 179, 175, 0.2);
   animation: pulse 1s infinite;
+  box-shadow: 0 0 10px rgba(72, 179, 175, 0.3);
 }
 
 @keyframes pulse {
-  0% { border-color: #565758; }
-  50% { border-color: #61DAFB; }
-  100% { border-color: #565758; }
+  0% { border-color: #48B3AF; box-shadow: 0 0 10px rgba(72, 179, 175, 0.3); }
+  50% { border-color: #61DAFB; box-shadow: 0 0 15px rgba(97, 218, 251, 0.5); }
+  100% { border-color: #48B3AF; box-shadow: 0 0 10px rgba(72, 179, 175, 0.3); }
 }
 
 .keyboard {
-  margin-top: 30px;
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 15px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .keyboard-row {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   justify-content: center;
   margin: 6px 0;
 }
 
 .keyboard-key {
-  padding: 12px 8px;
-  background-color: #818384;
+  padding: 10px 6px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
   color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  font-weight: bold;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
-  min-width: 40px;
-  transition: all 0.2s ease;
+  min-width: 32px;
+  max-width: 36px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.keyboard-key:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.keyboard-key.correct {
+  background: linear-gradient(135deg, #538D4E, #4A7C59);
+  border-color: #538D4E;
+  box-shadow: 0 0 15px rgba(83, 141, 78, 0.6);
+}
+
+.keyboard-key.incorrect-position {
+  background: linear-gradient(135deg, #B59F3B, #A68B2B);
+  border-color: #B59F3B;
+  box-shadow: 0 0 15px rgba(181, 159, 59, 0.6);
+}
+
+.keyboard-key.incorrect {
+  background: linear-gradient(135deg, #3A3A3C, #2D2D2F);
+  border-color: #3A3A3C;
+  box-shadow: 0 0 15px rgba(58, 58, 60, 0.6);
+}
+
+.keyboard-key.wide {
+  min-width: 50px;
+  max-width: 60px;
+  flex: 1.2;
 }
 
 @media (max-width: 767px) {
+  .App-header {
+    padding-top: 20px;
+  }
+  
+  .game-header {
+    margin-top: 10px;
+  }
+  
+  .mode-indicator {
+    font-size: 1.5rem;
+    padding: 10px 15px;
+  }
+  
+  .back-button, .new-game-button {
+    width: 120px;
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+  
+  .game-board {
+    margin: 5px;
+    padding: 12px;
+  }
+  
+  .letter-tile {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
   .keyboard {
-    margin-top: 20px;
-    padding: 0 10px;
+    margin-top: 10px;
+    padding: 10px;
   }
   
   .keyboard-row {
     gap: 3px;
-    margin: 4px 0;
+    margin: 3px 0;
   }
   
   .keyboard-key {
     padding: 8px 4px;
-    font-size: 0.8rem;
-    min-width: 28px;
+    font-size: 0.7rem;
+    min-width: 26px;
     flex: 1;
-    max-width: 35px;
+    max-width: 30px;
   }
   
   .keyboard-key.wide {
-    flex: 1.5;
-    max-width: 50px;
+    flex: 1.3;
+    min-width: 40px;
+    max-width: 45px;
   }
 }
 
