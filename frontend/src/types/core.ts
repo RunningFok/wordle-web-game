@@ -13,7 +13,7 @@ export interface GameState {
   id?: number;
   currentGuessWord?: string;
   tries: GuessResult[];
-  gameStatus: 'playing' | 'won' | 'lost';
+  gameStatus: 'playing' | 'won' | 'lost' | 'timeout';
   targetWord?: string;
   maxTries: number;
   wordSize?: number;
@@ -28,7 +28,7 @@ export interface CreateGameStateResponse {
   id: number;
   targetWord: string;
   tries: GuessResult[];
-  gameStatus: 'playing' | 'won' | 'lost';
+  gameStatus: 'playing' | 'won' | 'lost' | 'timeout';
   mode: string;
   maxTries: number;
   wordSize?: number;

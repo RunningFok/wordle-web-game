@@ -11,7 +11,7 @@ function AppContent() {
   const [showGameFinish, setShowGameFinish] = useState(false);
 
   useEffect(() => {
-    if (gameState?.gameStatus === 'won' || gameState?.gameStatus === 'lost') {
+    if (gameState?.gameStatus === 'won' || gameState?.gameStatus === 'lost' || gameState?.gameStatus === 'timeout') {
       setShowGameFinish(true);
     } else {
       setShowGameFinish(false);
@@ -51,6 +51,15 @@ function AppContent() {
 
   return (
     <div>
+      {showGame && gameState ? (
+        <GamePage
+          gameState={gameState}
+          onNewGame={() => startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries, gameState.timeLimit)}
+          onBackToHome={goBackToHome}
+        />
+      ) : (
+        <Home />
+      )}
       <AnimatePresence mode="wait">
         {showGame && gameState ? (
           <motion.div
@@ -75,7 +84,7 @@ function AppContent() {
           >
             <GamePage
               gameState={gameState}
-              onNewGame={() => startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries)}
+              onNewGame={() => startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries, gameState.timeLimit)}
               onBackToHome={goBackToHome}
             />
           </motion.div>
@@ -109,7 +118,7 @@ function AppContent() {
         <GameFinishModal
           isOpen={showGameFinish}
           onClose={() => setShowGameFinish(false)}
-          gameStatus={gameState.gameStatus as 'won' | 'lost'}
+          gameStatus={gameState.gameStatus as 'won' | 'lost' | 'timeout'}
           targetWord={gameState.targetWord}
           onPlayAgain={playAgainGame}
           onBackToHome={goBackToHome}

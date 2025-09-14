@@ -17,7 +17,7 @@ interface InvalidWordModalProps {
 interface GameFinishModalProps {
   isOpen: boolean;
   onClose: () => void;
-  gameStatus: 'won' | 'lost';
+  gameStatus: 'won' | 'lost' | 'timeout';
   targetWord: string;
   onPlayAgain: () => void;
   onBackToHome: () => void;
@@ -190,10 +190,12 @@ export const GameFinishModal: React.FC<GameFinishModalProps> = ({
   return (
     <div className="game-finish-modal">
       <div className="game-finish-modal-content">
-        <h2>{gameStatus === 'won' ? '🎉 Congratulations!' : '😔 Game Over'}</h2>
+        <h2>{gameStatus === 'won' ? '🎉 Congratulations!' : gameStatus === 'timeout' ? '😔 Time\'s Up!' : '😔 Game Over'}</h2>
         <p>
           {gameStatus === 'won' 
             ? `You guessed "${targetWord}" correctly!` 
+            : gameStatus === 'timeout'
+            ? `You ran out of time!`
             : `The word was "${targetWord}"`
           }
         </p>

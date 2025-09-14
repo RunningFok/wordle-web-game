@@ -57,10 +57,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setInvalidWord('');
   }, []);
 
-  const backToHome = useCallback(() => {
-    setShowGame(false);
-  }, []);
-
   const resetTimer = useCallback(() => {
     setTimeLeft(gameState?.timeLimit || 45);
   }, [gameState?.timeLimit]);
@@ -76,7 +72,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         if (newTime <= 0) {
           setTimeout(() => {
             if (gameState?.mode === 'speed' && gameState?.id) {
-              apiService.loseGameState(gameState.id)
+              apiService.timeoutGameState(gameState.id)
                 .then(response => {
                   setGameState(prev => prev ? ({
                     ...prev,
@@ -85,10 +81,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
                   }) : null);
                 })
                 .catch(error => {
-                  console.error('Failed to set game state status to lose on backend:', error);
+                  console.error('Failed to set game state status to timeout on backend:', error);
                   setGameState(prev => prev ? ({
                     ...prev,
-                    gameStatus: 'lost',
+                    gameStatus: 'timeout',
                   }) : null);
                 });
             }
@@ -106,6 +102,11 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       timerRef.current = null;
     }
   }, []);
+
+  const backToHome = useCallback(() => {
+    stopTimer();
+    setShowGame(false);
+  }, [stopTimer]);
 
   useEffect(() => {
     if (gameState?.mode === 'speed' && gameState?.gameStatus === 'playing') {
