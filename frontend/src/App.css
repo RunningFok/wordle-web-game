@@ -7,6 +7,7 @@
 
 .App-header {
   padding: 10px;
+  padding-top: 50px;
   color: white;
 }
 
@@ -81,7 +82,14 @@
   padding-top: 10px;
   padding: 10px;
   justify-content: space-between;
+  align-items: flex-start;
+}
+
+.game-title-section {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 10px;
 }
 
 .timer-display {
@@ -129,6 +137,12 @@
     z-index: 10;
     max-width: 800px;
     margin: 35px auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .App-header {
+    padding-top: 180px;
   }
 }
 
@@ -259,8 +273,8 @@
 }
 
 .letter-tile {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border: 2px solid #3A3A3C;
   background-color: #FFFFFF;
   color: black;
