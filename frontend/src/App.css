@@ -11,7 +11,7 @@
 }
 
 .App-title {
-  padding: 0 0 0 0;
+  padding: 60px 0 0 0;
   margin-bottom: 0;
   font-size: 5rem;
   color: #FFFFFF;
@@ -457,7 +457,7 @@
   
   .App-title {
     letter-spacing: 3px;
-    padding: 0;
+    padding: 60px 0 0 0;
     margin-bottom: 0;
   }
   
@@ -1554,12 +1554,12 @@
 
 @media (max-width: 480px) {
   .App-header {
-    padding: 40px 0 0 0;
+    padding: 1px 0 0 0;
   }
   
   .App-title {
+    padding: 60px 0 0 0;
     letter-spacing: 2px;
-    padding: 0;
     margin-bottom: 0;
   }
   
