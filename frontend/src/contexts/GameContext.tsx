@@ -57,10 +57,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setInvalidWord('');
   }, []);
 
-  const backToHome = useCallback(() => {
-    setShowGame(false);
-  }, []);
-
   const resetTimer = useCallback(() => {
     setTimeLeft(gameState?.timeLimit || 45);
   }, [gameState?.timeLimit]);
@@ -106,6 +102,11 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       timerRef.current = null;
     }
   }, []);
+
+  const backToHome = useCallback(() => {
+    stopTimer();
+    setShowGame(false);
+  }, [stopTimer]);
 
   useEffect(() => {
     if (gameState?.mode === 'speed' && gameState?.gameStatus === 'playing') {
