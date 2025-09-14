@@ -19,7 +19,7 @@ export const MenuTabs: React.FC<MenuTabsProps> = ({
   const tabs = [
     { id: 'classic' as TabType, label: 'Classic Mode' },
     { id: 'speed' as TabType, label: 'Speed Mode' },
-    { id: 'rules' as TabType, label: 'How to Play Wordle' },
+    { id: 'rules' as TabType, label: 'How to Play' },
   ];
   
   const [activeTab, setActiveTab] = useState<TabType>('classic');

@@ -50,7 +50,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
     switch (mode) {
       case 'classic': return <h2 className="classic-mode">Classic Mode</h2>;
       case 'speed': return <h2 className="speed-mode">Speed Mode</h2>;
-      case 'rules': return <h2>How to Play Wordle</h2>;
+      case 'rules': return <h2>How to Play</h2>;
       default: return '';
     }
   };
@@ -94,7 +94,7 @@ export const MenuContent: React.FC<MenuContentProps> = ({
               className="accordion-header"
               onClick={() => toggleAccordion('how-to-play')}
             >
-              <span>How to Play</span>
+              <span>How to Play Wordle</span>
               <motion.div
                 animate={{ rotate: openAccordions.includes('how-to-play') ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
