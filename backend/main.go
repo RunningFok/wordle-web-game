@@ -41,5 +41,5 @@ func main() {
 	
 	
 	fmt.Printf("Server starting on port %s\n", port)
-	router.Run(":" + port)
+	router.Run("0.0.0.0:" + port)
 }
