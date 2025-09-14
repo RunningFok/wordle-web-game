@@ -28,17 +28,17 @@ function AppContent() {
     setShowGame(true);
   };
 
-  const startNewGameWithConfig = async (gameMode: 'classic' | 'speed', wordSize: number, maxTries: number) => {
+  const startNewGameWithConfig = async (gameMode: 'classic' | 'speed', wordSize: number, maxTries: number, timeLimit?: number) => {
     if (gameMode === 'classic') {
       await createClassicGame(wordSize, maxTries);
     } else {
-      await createSpeedGame(wordSize, maxTries);
+      await createSpeedGame(wordSize, maxTries, timeLimit || 45);
     }
     setShowGame(true);
   };
 
-  const startSpeedGame = async (wordSize: number, maxTries: number) => {
-    await createSpeedGame(wordSize, maxTries);
+  const startSpeedGame = async (wordSize: number, maxTries: number, timeLimit: number) => {
+    await createSpeedGame(wordSize, maxTries, timeLimit);
     setShowGame(true);
   };
 
@@ -49,7 +49,7 @@ function AppContent() {
 
   const playAgainGame = async () => {
     if (gameState) {
-      await startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries);
+      await startNewGameWithConfig(gameState.mode, gameState.wordSize || 5, gameState.maxTries, gameState.timeLimit);
       setShowGameFinish(false);
     }
   };

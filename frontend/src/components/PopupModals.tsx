@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 interface GameConfigModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onStartSpeedGame: (wordSize: number, maxTries: number) => void;
+  onStartSpeedGame: (wordSize: number, maxTries: number, timeLimit: number) => void;
   onStartClassicGame: (wordSize: number, maxTries: number) => void;
   mode: 'classic' | 'speed';
 }
@@ -68,12 +68,13 @@ export const GameConfigModal: React.FC<GameConfigModalProps> = ({
 }) => {
   const [wordSize, setWordSize] = useState(5);
   const [maxTries, setMaxTries] = useState(6);
+  const [timeLimit, setTimeLimit] = useState(45);
 
   const handleStartGame = () => {
     if (mode === 'classic') {
       onStartClassicGame(wordSize, maxTries);
     } else {
-      onStartSpeedGame(wordSize, maxTries);
+      onStartSpeedGame(wordSize, maxTries, timeLimit);
     }
     onClose();
   };
@@ -120,6 +121,26 @@ export const GameConfigModal: React.FC<GameConfigModalProps> = ({
             ))}
           </div>
         </div>
+
+        {mode === 'speed' && (
+          <div className="setting-group">
+            <h3>Time Limit</h3>
+            <div className="radio-group">
+              {[30, 45, 60].map(seconds => (
+                <label key={seconds} className="radio-option">
+                  <input
+                    type="radio"
+                    name="timeLimit"
+                    value={seconds}
+                    checked={timeLimit === seconds}
+                    onChange={(e) => setTimeLimit(parseInt(e.target.value))}
+                  />
+                  <span>{seconds} seconds</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="modal-buttons">
           <button 

@@ -18,6 +18,7 @@ export interface GameState {
   maxTries: number;
   wordSize?: number;
   mode: 'classic' | 'speed';
+  timeLimit?: number;
   createdAt?: string;
   updatedAt?: string;
 }

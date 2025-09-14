@@ -2,6 +2,7 @@ import React from 'react';
 import { GameControl } from './GameControl';
 import { GameState } from '../types/core';
 import { GameBoard } from './GameBoard';
+import { useGame } from '../contexts/GameContext';
 
 interface GamePageProps {
     gameState: GameState;
@@ -14,6 +15,7 @@ export const GamePage: React.FC<GamePageProps> = ({
     onNewGame,
     onBackToHome
   }) => {
+    const { timeLeft } = useGame();
     return (
       <div className="App">
         <header className="App-header">
@@ -21,6 +23,14 @@ export const GamePage: React.FC<GamePageProps> = ({
             <div className="mode-indicator">
               {gameState.mode === 'classic' ? 'Classic Mode' : 'Speed Mode'}
             </div>
+            {gameState.mode === 'speed' && (
+              <div className="timer-display">
+                <div className="timer-label">Time Left:</div>
+                <div className={`timer-value ${timeLeft <= 10 ? 'timer-warning' : ''}`}>
+                  {timeLeft}s
+                </div>
+              </div>
+            )}
             <div className="game-header-buttons">
               <button className="back-button" onClick={onBackToHome}>
                 Exit

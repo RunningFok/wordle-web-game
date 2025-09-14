@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GameConfigModal } from './PopupModals';
 
 interface HomePageProps {
-  onStartSpeedGame: (wordSize: number, maxTries: number) => void;
+  onStartSpeedGame: (wordSize: number, maxTries: number, timeLimit: number) => void;
   onStartClassicGame: (wordSize: number, maxTries: number) => void;
 }
 

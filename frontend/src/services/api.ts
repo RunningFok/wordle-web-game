@@ -73,6 +73,12 @@ class ApiService {
       method: 'PUT',
     });
   }
+
+  async loseGameState(id: number): Promise<CreateGameStateResponse> {
+    return this.makeRequest<CreateGameStateResponse>(`/gamestates/${id}/lose`, {
+      method: 'PUT',
+    });
+  }
 }
 
 export const apiService = new ApiService();

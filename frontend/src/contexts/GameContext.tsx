@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect, useRef } from 'react';
 import { GameState, CreateGameStateResponse, GuessResult } from '../types/core';
 import { apiService, PlayGameStateError } from '../services/api';
 import { getRandomWord } from '../helpers/gameLogic';
@@ -10,7 +10,7 @@ interface GameContextType {
   loading: boolean;
   error: string | null;
   createNewGame: (mode: GameMode) => Promise<void>;
-  createSpeedGame: (wordSize: number, maxTries: number) => Promise<void>;
+  createSpeedGame: (wordSize: number, maxTries: number, timeLimit: number) => Promise<void>;
   createClassicGame: (wordSize: number, maxTries: number) => Promise<void>;
   makeGuess: (guessWord: string) => Promise<void>;
   leaveGame: () => Promise<void>;
@@ -18,6 +18,8 @@ interface GameContextType {
   showInvalidWordPopup: boolean;
   invalidWord: string;
   clearInvalidWordPopup: () => void;
+  timeLeft: number;
+  resetTimer: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -40,6 +42,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const [showInvalidWordPopup, setShowInvalidWordPopup] = useState(false);
   const [invalidWord, setInvalidWord] = useState('');
+  const [timeLeft, setTimeLeft] = useState(45);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const clearError = useCallback(() => {
     setError(null);
@@ -49,6 +53,61 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setShowInvalidWordPopup(false);
     setInvalidWord('');
   }, []);
+
+  const resetTimer = useCallback(() => {
+    setTimeLeft(gameState?.timeLimit || 45);
+  }, [gameState?.timeLimit]);
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    
+    timerRef.current = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          if (gameState?.mode === 'speed' && gameState?.id) {
+            apiService.loseGameState(gameState.id)
+              .then(response => {
+                setGameState(prev => prev ? ({
+                  ...prev,
+                  gameStatus: response.gameStatus,
+                  updatedAt: response.updatedAt,
+                }) : null);
+              })
+              .catch(error => {
+                console.error('Failed to set game state status to lose on backend:', error);
+                setGameState(prev => prev ? ({
+                  ...prev,
+                  gameStatus: 'lost',
+                }) : null);
+              });
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, [gameState?.mode, gameState?.id]);
+
+  const stopTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (gameState?.mode === 'speed' && gameState?.gameStatus === 'playing') {
+      startTimer();
+    } else {
+      stopTimer();
+    }
+
+    return () => {
+      stopTimer();
+    };
+  }, [gameState?.mode, gameState?.gameStatus, startTimer, stopTimer]);
 
   const createNewGame = useCallback(async (mode: GameMode) => {
     setLoading(true);
@@ -79,6 +138,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           maxTries: response.maxTries,
           wordSize: response.wordSize || 5,
           mode: 'speed',
+          timeLimit: 45,
           createdAt: response.createdAt,
           updatedAt: response.updatedAt,
         };
@@ -92,7 +152,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const createSpeedGame = useCallback(async (wordSize: number, maxTries: number) => {
+  const createSpeedGame = useCallback(async (wordSize: number, maxTries: number, timeLimit: number) => {
     setLoading(true);
     setError(null);
     
@@ -108,10 +168,13 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         maxTries: response.maxTries,
         wordSize: response.wordSize || wordSize,
         mode: 'speed',
+        timeLimit: timeLimit,
         createdAt: response.createdAt,
         updatedAt: response.updatedAt,
       };
       setGameState(newGameState);
+      
+      setTimeLeft(timeLimit);
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create speed game');
@@ -202,6 +265,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           currentGuessWord: '',
           updatedAt: response.updatedAt,
         }) : null);
+
+        resetTimer();
+      
       }
       
     } catch (err) {
@@ -254,6 +320,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     showInvalidWordPopup,
     invalidWord,
     clearInvalidWordPopup,
+    timeLeft,
+    resetTimer,
   };
 
   return (
