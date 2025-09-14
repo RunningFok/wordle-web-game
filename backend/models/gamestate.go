@@ -257,7 +257,7 @@ func (gs *GameState) LeaveGameState() error {
 	return nil
 }
 
-func (gs *GameState) LoseGameState() error {
+func (gs *GameState) TimeoutGameState() error {
 	updatedAt := time.Now()
 	
 	query := `
@@ -266,12 +266,12 @@ func (gs *GameState) LoseGameState() error {
 		WHERE id = ?
 	`
 	
-	_, err := database.DB.Exec(query, "lost", updatedAt, gs.ID)
+	_, err := database.DB.Exec(query, "timeout", updatedAt, gs.ID)
 	if err != nil {
-		return fmt.Errorf("failed to set game state status to lose: %v", err)
+		return fmt.Errorf("failed to set game state status to timeout: %v", err)
 	}
 	
-	gs.GameStatus = "lost"
+	gs.GameStatus = "timeout"
 	gs.UpdatedAt = updatedAt
 	
 	return nil

@@ -188,7 +188,7 @@ func leaveGameStateByID(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "Player left the game state successfully"})
 }
 
-func loseGameStateByID(context *gin.Context) {
+func timeoutGameStateByID(context *gin.Context) {
 	fmt.Println("Setting game state status to lose")
 	
 	gameStateID, err := strconv.ParseInt(context.Param("id"), 10, 64)
@@ -203,9 +203,9 @@ func loseGameStateByID(context *gin.Context) {
 		return
 	}
 	
-	err = gameState.LoseGameState()
+	err = gameState.TimeoutGameState()
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to set game state status to lose: " + err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to set game state status to timeout: " + err.Error()})
 		return
 	}
 	

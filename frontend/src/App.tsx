@@ -10,7 +10,7 @@ function AppContent() {
   const [showGameFinish, setShowGameFinish] = useState(false);
 
   useEffect(() => {
-    if (gameState?.gameStatus === 'won' || gameState?.gameStatus === 'lost') {
+    if (gameState?.gameStatus === 'won' || gameState?.gameStatus === 'lost' || gameState?.gameStatus === 'timeout') {
       setShowGameFinish(true);
     } else {
       setShowGameFinish(false);
@@ -64,7 +64,7 @@ function AppContent() {
         <GameFinishModal
           isOpen={showGameFinish}
           onClose={() => setShowGameFinish(false)}
-          gameStatus={gameState.gameStatus as 'won' | 'lost'}
+          gameStatus={gameState.gameStatus as 'won' | 'lost' | 'timeout'}
           targetWord={gameState.targetWord}
           onPlayAgain={playAgainGame}
           onBackToHome={goBackToHome}

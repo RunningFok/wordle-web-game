@@ -74,8 +74,8 @@ class ApiService {
     });
   }
 
-  async loseGameState(id: number): Promise<CreateGameStateResponse> {
-    return this.makeRequest<CreateGameStateResponse>(`/gamestates/${id}/lose`, {
+  async timeoutGameState(id: number): Promise<CreateGameStateResponse> {
+    return this.makeRequest<CreateGameStateResponse>(`/gamestates/${id}/timeout`, {
       method: 'PUT',
     });
   }
