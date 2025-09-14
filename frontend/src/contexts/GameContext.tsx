@@ -72,29 +72,32 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
-        if (prev <= 1) {
-          if (gameState?.mode === 'speed' && gameState?.id) {
-            apiService.loseGameState(gameState.id)
-              .then(response => {
-                setGameState(prev => prev ? ({
-                  ...prev,
-                  gameStatus: response.gameStatus,
-                  updatedAt: response.updatedAt,
-                }) : null);
-              })
-              .catch(error => {
-                console.error('Failed to set game state status to lose on backend:', error);
-                setGameState(prev => prev ? ({
-                  ...prev,
-                  gameStatus: 'lost',
-                }) : null);
-              });
-          }
+        const newTime = prev - 0.1;
+        if (newTime <= 0) {
+          setTimeout(() => {
+            if (gameState?.mode === 'speed' && gameState?.id) {
+              apiService.loseGameState(gameState.id)
+                .then(response => {
+                  setGameState(prev => prev ? ({
+                    ...prev,
+                    gameStatus: response.gameStatus,
+                    updatedAt: response.updatedAt,
+                  }) : null);
+                })
+                .catch(error => {
+                  console.error('Failed to set game state status to lose on backend:', error);
+                  setGameState(prev => prev ? ({
+                    ...prev,
+                    gameStatus: 'lost',
+                  }) : null);
+                });
+            }
+          }, 500);
           return 0;
         }
-        return prev - 1;
+        return newTime;
       });
-    }, 1000);
+    }, 100);
   }, [gameState?.mode, gameState?.id]);
 
   const stopTimer = useCallback(() => {
