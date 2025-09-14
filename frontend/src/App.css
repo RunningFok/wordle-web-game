@@ -609,14 +609,15 @@
 }
 
 .setting-group {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .setting-group h3 {
   margin: 0 0 15px 0;
   font-size: 1.2rem;
   color: #FFFFFF;
-  text-align: left;
+  text-align: center;
 }
 
 .radio-group {
@@ -695,4 +696,666 @@
 
 .start-button:hover {
   background-color: #3A9B97;
+}
+
+.tabs-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tabs-header {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-button {
+  position: relative;
+  padding: 15px 25px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  z-index: 2;
+  min-width: 120px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.tab-button:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tab-button.active {
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+.tab-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  background: linear-gradient(135deg, #48B3AF, #3A9B97);
+  border-radius: 8px;
+  z-index: -1;
+  box-shadow: 0 4px 15px rgba(72, 179, 175, 0.3);
+  pointer-events: none;
+}
+
+.tab-content {
+  min-height: 350px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.game-config-content {
+  max-width: 600px;
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+.game-config-content h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 2rem;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+.game-config-content p {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.game-start-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  padding-top: 10px;
+}
+
+.start-game-button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #48B3AF, #3A9B97);
+  color: white;
+  box-shadow: 0 4px 15px rgba(72, 179, 175, 0.3);
+  min-width: 288px;
+}
+
+.start-game-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(72, 179, 175, 0.4);
+  background: linear-gradient(135deg, #3A9B97, #2A7B77);
+}
+
+.start-game-button.speed-button {
+  background: linear-gradient(135deg, #A7E399, #8BC34A);
+  box-shadow: 0 4px 15px rgba(167, 227, 153, 0.3);
+}
+
+.start-game-button.speed-button:hover {
+  background: linear-gradient(135deg, #8BC34A, #689F38);
+  box-shadow: 0 6px 20px rgba(167, 227, 153, 0.4);
+}
+
+.setting-tabs-container {
+  margin-top: 10px;
+}
+
+.setting-tabs-header {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.setting-tab-button {
+  position: relative;
+  padding: 10px 15px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  z-index: 2;
+  min-width: 80px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.setting-tab-button:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.setting-tab-button.active {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.setting-tab-indicator {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  background: linear-gradient(135deg, #48B3AF, #3A9B97);
+  border-radius: 6px;
+  z-index: -1;
+  box-shadow: 0 2px 8px rgba(72, 179, 175, 0.3);
+  pointer-events: none;
+}
+
+.rules-content {
+  max-width: 600px;
+  width: 100%;
+  text-align: left;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.accordion-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  width: 100%;
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.accordion-header:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.accordion-icon {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.accordion-content {
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.02);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.accordion-content .rules-section {
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  padding: 15px 20px;
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+.accordion-content .rules-section:first-child {
+  padding-top: 0;
+}
+
+.accordion-content .rules-section:last-child {
+  padding-bottom: 15px;
+}
+
+.smart-settings-container {
+  margin: 20px 0 10px 0;
+  width: 100%;
+  max-width: 288px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.smart-settings-display {
+  width: 100%;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.smart-settings-display:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.settings-summary {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.settings-expand-icon {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+  color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  right: 20px;
+}
+
+.smart-settings-content {
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.smart-settings-content .setting-group {
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  padding: 15px 20px;
+}
+
+.smart-settings-content .setting-group:first-child {
+  padding-top: 15px;
+}
+
+.smart-settings-content .setting-group:last-child {
+  padding-bottom: 15px;
+}
+
+.rules-content h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+.rules-content h3 {
+  color: #48B3AF;
+  margin: 15px 0 10px 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.rules-content p {
+  margin: 10px 0;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.rules-content ul {
+  margin: 15px 0;
+  padding-left: 20px;
+}
+
+.rules-content li {
+  margin: 8px 0;
+  line-height: 1.5;
+  font-size: 1.1rem;
+}
+
+.rules-section {
+  margin-bottom: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.color-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 15px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.color-example {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tile {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #3A3A3C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  border-radius: 4px;
+}
+
+.tile.green {
+  background-color: #538D4E;
+  border-color: #538D4E;
+}
+
+.tile.yellow {
+  background-color: #B59F3B;
+  border-color: #B59F3B;
+}
+
+.tile.gray {
+  background-color: #3A3A3C;
+  border-color: #3A3A3C;
+}
+
+@media (max-width: 768px) {
+  .tabs-container {
+    margin: 0 5px;
+    padding: 10px;
+  }
+  
+  .tabs-header {
+    margin-bottom: 15px;
+    padding: 3px;
+  }
+  
+  .tab-button {
+    min-width: auto;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .tab-indicator {
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    z-index: -1;
+    pointer-events: none;
+  }
+  
+  .tab-content {
+    min-height: 280px;
+  }
+  
+  .game-config-content {
+    padding: 10px;
+  }
+  
+  .game-config-content h2 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+  }
+  
+  .game-config-content p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .setting-group {
+    margin-bottom: 12px;
+  }
+  
+  .setting-group h3 {
+    font-size: 1.1rem;
+    margin: 15px 0 10px 0;
+  }
+  
+  .start-game-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    min-width: 230px;
+  }
+  
+  .setting-tab-button {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    min-width: 60px;
+  }
+  
+  .rules-content {
+    padding: 10px;
+  }
+  
+  .rules-content h2 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+  }
+  
+  .rules-content h3 {
+    font-size: 1.1rem;
+    margin: 10px 0 8px 0;
+  }
+  
+  .rules-content p, .rules-content li {
+    font-size: 1rem;
+  }
+  
+  .rules-section {
+    margin-bottom: 10px;
+    padding: 12px 15px;
+  }
+  
+  .accordion-header {
+    padding: 15px;
+    font-size: 1.1rem;
+  }
+  
+  .accordion-content .rules-section {
+    padding: 12px 15px;
+  }
+  
+  .accordion-content .rules-section:first-child {
+    padding-top: 0;
+  }
+  
+  .accordion-content .rules-section:last-child {
+    padding-bottom: 15px;
+  }
+  
+  .smart-settings-container {
+    max-width: 230px;
+  }
+  
+  .smart-settings-display {
+    padding: 12px 15px;
+    font-size: 1rem;
+  }
+  
+  .settings-expand-icon {
+    right: 15px;
+  }
+  
+  .settings-summary {
+    font-size: 1rem;
+  }
+  
+  .smart-settings-content .setting-group {
+    padding: 12px 15px;
+  }
+  
+  .smart-settings-content .setting-group:first-child {
+    padding-top: 12px;
+  }
+  
+  .smart-settings-content .setting-group:last-child {
+    padding-bottom: 12px;
+  }
+  
+  .color-examples {
+    gap: 8px;
+  }
+  
+  .color-example {
+    flex-direction: column;
+    text-align: center;
+    gap: 6px;
+    padding: 8px;
+  }
+  
+  .tile {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabs-container {
+    margin: 0 2px;
+    padding: 8px;
+  }
+  
+  .tab-button {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .tab-content {
+    min-height: 250px;
+  }
+  
+  .game-config-content h2 {
+    font-size: 1.2rem;
+  }
+  
+  .setting-tab-button {
+    padding: 5px 8px;
+    font-size: 0.7rem;
+    min-width: 50px;
+  }
+  
+  .start-game-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    min-width: 202px;
+  }
+  
+  .rules-content h2 {
+    font-size: 1.2rem;
+  }
+  
+  .rules-section {
+    padding: 8px 10px;
+  }
+  
+  .accordion-header {
+    padding: 12px;
+    font-size: 1rem;
+  }
+  
+  .accordion-content .rules-section {
+    padding: 8px 12px;
+  }
+  
+  .accordion-content .rules-section:first-child {
+    padding-top: 0;
+  }
+  
+  .accordion-content .rules-section:last-child {
+    padding-bottom: 12px;
+  }
+  
+  .smart-settings-container {
+    max-width: 202px;
+  }
+  
+  .smart-settings-display {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .settings-expand-icon {
+    right: 12px;
+  }
+  
+  .settings-summary {
+    font-size: 0.9rem;
+  }
+  
+  .smart-settings-content .setting-group {
+    padding: 8px 12px;
+  }
+  
+  .smart-settings-content .setting-group:first-child {
+    padding-top: 8px;
+  }
+  
+  .smart-settings-content .setting-group:last-child {
+    padding-bottom: 8px;
+  }
 }
