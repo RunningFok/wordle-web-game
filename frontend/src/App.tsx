@@ -1,3 +1,21 @@
+// Wordle Web Game - Main Application Component
+//
+// ARCHITECTURE DECISION: Component-based architecture with Context API for state management
+// - Separation of concerns: App handles routing, GameContext manages game state
+// - Framer Motion for smooth transitions and enhanced UX
+// - Modal system for game completion feedback
+//
+// DESIGN PATTERNS USED:
+// - Provider Pattern: GameProvider wraps entire app for global state access
+// - Render Props: Conditional rendering based on game state
+//
+// TRADE-OFFS CONSIDERED:
+// - Context vs Redux: Context chosen for simpler state management
+// - Class vs Functional Components: Functional for hooks and modern React patterns
+//
+// PERFORMANCE OPTIMIZATIONS:
+// - Conditional rendering to avoid unnecessary component mounting
+// - useCallback for stable function references
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Home } from './components/Home';
@@ -6,6 +24,8 @@ import { GameFinishModal } from './components/PopupModals';
 import { GameProvider, useGame } from './contexts/GameContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// AppContent handles the main application logic and routing between Home and Game views
+// STATE MANAGEMENT: Uses GameContext for centralized game state management
 function AppContent() {
   const { gameState, showGame, createSpeedGame, createClassicGame, error, clearError, backToHome } = useGame();
   const [showGameFinish, setShowGameFinish] = useState(false);
@@ -23,6 +43,8 @@ function AppContent() {
     setShowGameFinish(false);
   };
 
+  // Factory function for creating games with different configurations
+  // DESIGN PATTERN: Strategy pattern for different game modes
   const startNewGameWithConfig = async (gameMode: 'classic' | 'speed', wordSize: number, maxTries: number, timeLimit?: number) => {
     if (gameMode === 'classic') {
       await createClassicGame(wordSize, maxTries);
@@ -30,7 +52,6 @@ function AppContent() {
       await createSpeedGame(wordSize, maxTries, timeLimit || 45);
     }
   };
-
 
   const playAgainGame = async () => {
     if (gameState) {
@@ -105,6 +126,8 @@ function AppContent() {
         )}
       </AnimatePresence>
       
+      {/* Game completion modal - only shows when game ends and target word is available */}
+      {/* UX DECISION: Modal provides immediate feedback and clear next actions */}
       {gameState && gameState.targetWord && (
         <GameFinishModal
           isOpen={showGameFinish}
@@ -119,6 +142,8 @@ function AppContent() {
   );
 }
 
+// Root App component with Context Provider
+// ARCHITECTURE: Provider pattern for global state management
 function App() {
   return (
     <GameProvider>

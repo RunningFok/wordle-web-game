@@ -1,7 +1,25 @@
+// API Service - Centralized HTTP Client for Backend Communication
+//
+// ARCHITECTURE DECISION: Service layer pattern for API abstraction
+// - Single responsibility: Handle all HTTP communication with backend
+// - Error handling: Custom error types for different failure scenarios
+//
+// DESIGN PATTERNS USED:
+// - Service Layer Pattern: Encapsulates all API communication
+// - Error Handling Pattern: Custom error classes for different error types
+//
+// TRADE-OFFS CONSIDERED:
+// - Global vs Local Error Handling: Hybrid approach with custom error types
+//
+// PERFORMANCE CONSIDERATIONS:
+// - TypeScript interfaces for compile-time type safety
 import { CreateGameStateResponse, GameState, PlayGameStateRequest, PlayGameStateResponse, GameLostResponse, PlayGameStateErrorType } from '../types/core';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
+// Custom error class for invalid word submissions
+// DESIGN DECISION: Specific error type for better error handling in UI
+// Contains the invalid word for user feedback
 export class PlayGameStateError extends Error {
   public invalidGuessWord?: string;
   
@@ -12,6 +30,8 @@ export class PlayGameStateError extends Error {
   }
 }
 
+// Main API service class with generic HTTP request handling
+// DESIGN PATTERN: Template method pattern for consistent request handling
 class ApiService {
   private async makeRequest<T>(
     endpoint: string,

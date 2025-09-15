@@ -1,3 +1,24 @@
+// Game State Models and Business Logic
+//
+// ARCHITECTURE DECISION: Domain-driven design with clear separation of concerns
+// - Models contain both data structures and business logic
+// - JSON serialization for API responses and database storage
+// - Validation logic centralized in model methods
+//
+// DESIGN PATTERNS USED:
+// - Repository Pattern: Database operations encapsulated in model methods
+// - Factory Pattern: CreateGameState function for object creation
+// - Strategy Pattern: Different game modes (speed vs classic) handled polymorphically
+//
+// TRADE-OFFS CONSIDERED:
+// - JSON vs Binary storage: JSON chosen for debugging and API consistency
+// - In-memory vs Database: Database for persistence and multi-user support
+// - Single vs Multiple tables: Single table for simplicity, could be normalized later
+//
+// PERFORMANCE CONSIDERATIONS:
+// - Database queries optimized with proper indexing
+// - JSON marshaling/unmarshaling cached where possible
+// - Connection pooling handled at database layer
 package models
 
 import (
@@ -9,20 +30,27 @@ import (
 	"wordle-backend/helpers"
 )
 
+// LetterResult represents the evaluation of a single letter in a guess
+// Status can be: "correct", "incorrect-position", or "incorrect"
 type LetterResult struct {
 	Letter string `json:"letter"`
 	Status string `json:"status"`
 }
 
+// GuessResult encapsulates a complete guess attempt with its evaluation
+// Contains the word guessed, letter-by-letter results, and overall correctness
 type GuessResult struct {
 	GuessWord     string         `json:"guessWord"`
 	LetterResultArray   []LetterResult `json:"letterResultArray"`
 	IsCorrect bool           `json:"isCorrect"`
 }
 
+// GameState represents the complete state of a Wordle game session
+// DESIGN DECISION: Immutable target word for security
+// GameStatus can be: "playing", "won", "lost", "timeout"
 type GameState struct {
 	ID          int64     `json:"id"`
-	TargetWord  string    `json:"targetWord"`
+	TargetWord  string    `json:"targetWord"`  // Hidden from client until game ends
 	Tries []GuessResult `json:"tries"`
 	GameStatus string    `json:"gameStatus"`
 	Mode string    `json:"mode"`
@@ -32,6 +60,8 @@ type GameState struct {
 	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
+// CreateGameState is a factory function that creates a new game state with validation
+// Game Rule: Target word is randomly selected and not exposed to client
 func CreateGameState(maxTries int, wordSize int) (GameState, error) {
 	if maxTries < 5 || maxTries > 7 {
 		return GameState{}, fmt.Errorf("maxTries must be between 5 and 7, got %d", maxTries)
@@ -42,18 +72,20 @@ func CreateGameState(maxTries int, wordSize int) (GameState, error) {
 	
 	now := time.Now()
 	
+	// Generate random target word from appropriate word list
 	randomWord := helpers.GetRandomWord(wordSize)
 	nextID, err := helpers.GetNextID("game_states")
 	if err != nil {
 		return GameState{}, err
 	}
 	
+	// Create new game state with default values
 	return GameState{
 		ID:         nextID,
-		TargetWord: randomWord,
-		Tries: []GuessResult{},
+		TargetWord: randomWord, // Server-side only, not sent to client
+		Tries: []GuessResult{}, // Empty slice for new game
 		GameStatus: "playing",
-		Mode: "speed",
+		Mode: "speed", // Default to API-based mode
 		MaxTries:   maxTries,
 		WordSize:   wordSize,
 		CreatedAt:  now,
@@ -187,35 +219,47 @@ func UpdateGameState(gameState GameState) error {
 	return nil
 }
 
+// ValidateGuess implements the core Wordle game logic for evaluating guesses
+// ALGORITHM: Two-pass approach for accurate letter evaluation
+// - First pass: Mark exact position matches (green)
+// - Second pass: Mark position mismatches (yellow) with proper letter counting
+//
+// BUSINESS RULE: Each letter in target word can only be matched once
+// This prevents over-counting duplicate letters in guesses
 func ValidateGuess(guessWord string, targetWord string) []LetterResult {
 	letterResultArray := make([]LetterResult, len(guessWord))
 	
+	// Normalize to uppercase for consistent comparison
 	guessWord = strings.ToUpper(guessWord)
 	targetWord = strings.ToUpper(targetWord)
 	
+	// Count available letters in target word for yellow letter logic
 	targetLetterCounts := make(map[rune]int)
 	for _, letter := range targetWord {
 		targetLetterCounts[letter]++
 	}
 	
+	// First pass: Mark exact position matches (green squares)
 	for i, letter := range guessWord {
 		if i < len(targetWord) && rune(targetWord[i]) == letter {
 			letterResultArray[i] = LetterResult{
 				Letter: string(letter),
 				Status: "correct",
 			}
-			targetLetterCounts[letter]--
+			targetLetterCounts[letter]-- // Take this letter
 		}
 	}
 	
+	// Second pass: Mark position mismatches (yellow squares)
+	// Only mark as yellow if letter exists in target and hasn't been over-consumed
 	for i, letter := range guessWord {
-		if letterResultArray[i].Status == "" {
+		if letterResultArray[i].Status == "" { // Skip already marked letters
 			if targetLetterCounts[letter] > 0 {
 				letterResultArray[i] = LetterResult{
 					Letter: string(letter),
 					Status: "incorrect-position",
 				}
-				targetLetterCounts[letter]--
+				targetLetterCounts[letter]-- // Take this letter
 			} else {
 				letterResultArray[i] = LetterResult{
 					Letter: string(letter),

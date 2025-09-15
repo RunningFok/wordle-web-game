@@ -1,8 +1,32 @@
+// Game Context - Centralized State Management for Wordle Game
+//
+// ARCHITECTURE DECISION: Context API for global state management
+// - Single source of truth for game state across all components
+// - Encapsulates API communication and business logic
+// - Provides clean separation between UI and data layer
+//
+// DESIGN PATTERNS USED:
+// - Context Provider Pattern: Centralized state management
+// - Custom Hook Pattern: useGame() for clean component integration
+// - Strategy Pattern: Different game modes (classic vs speed) handled polymorphically
+//
+// TRADE-OFFS CONSIDERED:
+// - Context vs Redux: Context chosen for simpler state management and fewer dependencies
+// - Local vs Server State: Hybrid approach - classic mode is local, speed mode is server-based
+//
+// PERFORMANCE CONSIDERATIONS:
+// - useCallback for stable function references to prevent unnecessary re-renders
+// - Conditional API calls based on game mode
 import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect, useRef } from 'react';
 import { GameState, CreateGameStateResponse, PlayGameStateResponse, GuessResult } from '../types/core';
 import { apiService, PlayGameStateError } from '../services/api';
 import { getRandomWord } from '../helpers/gameLogic';
 
+// GameContextType defines the contract for game state management
+// DESIGN DECISION: Comprehensive interface covering all game operations
+// - Async operations for API calls with proper error handling
+// - Timer management for speed mode games
+// - Popup state management for user feedback
 interface GameContextType {
   gameState: GameState | null;
   loading: boolean;
@@ -178,6 +202,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     }
   }, []);
 
+  // Core game logic for processing player guesses
+  // STRATEGY PATTERN: Different handling for classic vs speed modes
+  // ERROR HANDLING: Comprehensive error handling with user-friendly messages
   const makeGuess = useCallback(async (guessWord: string) => {
     if (!gameState) {
       setError('No active game found');
@@ -190,6 +217,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
     try {
       if (gameState.mode === 'classic') {
+        // Classic mode: Client-side game logic for offline play
         if (!gameState.targetWord) {
           throw new Error('Target word is required for classic mode');
         }
@@ -203,6 +231,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         
         const { evaluateGuessLocal } = await import('../helpers/gameLogic');
         
+        // Evaluate guess using local game logic
         const letterResultArray = evaluateGuessLocal(guessWord.toUpperCase(), gameState.targetWord);
         const newGuess: GuessResult = {
           guessWord: guessWord.toUpperCase(),
@@ -213,6 +242,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         const isGameWon = newGuess.isCorrect;
         const isGameLost = !isGameWon && newTries.length >= gameState.maxTries;
 
+        // Update local state
         setGameState(prev => prev ? ({
           ...prev,
           tries: newTries,
@@ -221,6 +251,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         }) : null);
         
       } else if (gameState.mode === 'speed') {
+        // Speed mode: Server-side game logic for competitive play
         if (!gameState.id) {
           throw new Error('Game ID is required for API-based modes');
         }
@@ -230,6 +261,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           guessWord: guessWord,
         });
 
+        // Update state with server response
         setGameState(prev => prev ? ({
           ...prev,
           tries: response.tries,
@@ -244,11 +276,14 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       }
       
     } catch (err) {
+      // Handle invalid word errors with user-friendly popup
       if (err instanceof PlayGameStateError && err.invalidGuessWord) {
         setInvalidWord(err.invalidGuessWord);
         setShowInvalidWordPopup(true);
         return;
       }
+      // Re-throw other errors to be handled by error boundary
+      throw err;
     } finally {
       setLoading(false);
     }

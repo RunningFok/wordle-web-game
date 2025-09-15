@@ -1,3 +1,20 @@
+// Game State Routes - RESTful API Endpoints for Game Management
+//
+// ARCHITECTURE DECISION: RESTful API design with proper HTTP status codes
+// - CRUD operations for game state management
+// - Comprehensive error handling with meaningful messages
+// - Input validation and sanitization
+//
+// DESIGN PATTERNS USED:
+// - RESTful API Pattern: Standard HTTP methods and status codes
+// - Error Handling Pattern: Consistent error responses
+// - Validation Pattern: Input validation before processing
+//
+// TRADE-OFFS CONSIDERED:
+// - Verbose vs Concise Responses: Detailed responses for better debugging
+// - Synchronous vs Asynchronous: Synchronous for simplicity
+// - Single vs Multiple Endpoints: Single endpoint for game operations
+
 package routes
 
 import (
@@ -10,6 +27,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// createGameState handles POST /gamestates - Creates a new game session
+// BUSINESS LOGIC: Default values provided for optional parameters
+// ERROR HANDLING: Graceful fallback to defaults if request parsing fails
 func createGameState(context *gin.Context) {
 	fmt.Println("Creating wordle")
 	
@@ -18,8 +38,9 @@ func createGameState(context *gin.Context) {
 		WordSize int `json:"wordSize"`
 	}
 	
-	request.MaxTries = 6
-	request.WordSize = 5
+	// Default game configuration for optimal gameplay experience
+	request.MaxTries = 6  // Standard Wordle configuration
+	request.WordSize = 5  // Most common word length
 	
 	if context.Request.ContentLength > 0 {
 		if err := context.ShouldBindJSON(&request); err != nil {
@@ -84,6 +105,8 @@ func getGameStateByID(context *gin.Context) {
 	context.JSON(http.StatusOK, gameState)
 }
 
+// playGameState handles PUT /gamestates - Processes a guess in an active game
+// CORE GAME LOGIC: Validates guess, updates game state, determines win/loss
 func playGameState(context *gin.Context) {
 	fmt.Println("Updating game state")
 	
@@ -113,10 +136,16 @@ func playGameState(context *gin.Context) {
 		return
 	}
 
+	// Word validation against curated word lists
+	// BUSINESS RULE: Only valid words from approved lists are accepted
 	fmt.Printf("Validating word: %s\n", updateRequest.GuessWord)
 	if !helpers.IsWordInList(updateRequest.GuessWord) {
 		fmt.Printf("Word validation failed for: %s\n", updateRequest.GuessWord)
-		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid word: " + updateRequest.GuessWord + " is not a valid word", "invalid_guess_word": updateRequest.GuessWord})
+		// Return specific error with invalid word for frontend handling
+		context.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid word: " + updateRequest.GuessWord + " is not a valid word", 
+			"invalid_guess_word": updateRequest.GuessWord,
+		})
 		return
 	}
 	fmt.Printf("Word validation passed for: %s\n", updateRequest.GuessWord)
