@@ -3,8 +3,6 @@ import { GameState, CreateGameStateResponse, PlayGameStateResponse, GuessResult 
 import { apiService, PlayGameStateError } from '../services/api';
 import { getRandomWord } from '../helpers/gameLogic';
 
-type GameMode = 'classic' | 'speed';
-
 interface GameContextType {
   gameState: GameState | null;
   loading: boolean;
@@ -97,7 +95,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         return newTime;
       });
     }, 100);
-  }, [gameState?.mode, gameState?.id]);
+  }, [gameState?.mode, gameState?.id, gameState?.gameStatus]);
 
   const stopTimer = useCallback(() => {
     if (timerRef.current) {
