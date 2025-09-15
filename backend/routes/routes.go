@@ -5,6 +5,10 @@ import (
 )
 
 func RegisterRoutes(server *gin.Engine) {
+	server.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "ok", "message": "Server is running"})
+	})
+	
 	server.POST("/gamestates", createGameState)
 	server.GET("/gamestates", getAllGameStates)
 	server.GET("/gamestates/:id", getGameStateByID)

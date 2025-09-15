@@ -36,5 +36,12 @@ func main() {
 	
 	
 	fmt.Printf("Server starting on port %s\n", port)
-	router.Run("0.0.0.0:" + port)
+	
+	addr := ":" + port
+	fmt.Printf("Binding to address: %s\n", addr)
+	
+	if err := router.Run(addr); err != nil {
+		fmt.Printf("Failed to start server: %v\n", err)
+		os.Exit(1)
+	}
 }
