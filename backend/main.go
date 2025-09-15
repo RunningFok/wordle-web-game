@@ -29,19 +29,20 @@ func main() {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{apiUrl, "http://localhost:3000", "http://127.0.0.1:3000"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
-	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept"}
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
+	config.AllowCredentials = true
 	router.Use(cors.New(config))
 	
 	routes.RegisterRoutes(router)
 	
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status": "ok", 
+			"message": "Wordle Backend API is running",
+			"api_url": apiUrl,
+		})
+	})
 	
 	fmt.Printf("Server starting on port %s\n", port)
-	
-	addr := "0.0.0.0:" + port
-	fmt.Printf("Binding to address: %s\n", addr)
-	
-	if err := router.Run(addr); err != nil {
-		fmt.Printf("Failed to start server: %v\n", err)
-		os.Exit(1)
-	}
+	router.Run(":" + port)
 }
