@@ -70,8 +70,12 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       setTimeLeft(prev => {
         const newTime = prev - 0.1;
         if (newTime <= 0) {
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
           setTimeout(() => {
-            if (gameState?.mode === 'speed' && gameState?.id) {
+            if (gameState?.mode === 'speed' && gameState?.id && gameState?.gameStatus === 'playing') {
               apiService.timeoutGameState(gameState.id)
                 .then(response => {
                   setGameState(prev => prev ? ({
