@@ -44,11 +44,11 @@ func createGameState(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{
 		"message": "Game state created successfully",
 		"id": gameState.ID,
-		"targetWord": gameState.TargetWord,
 		"tries": gameState.Tries,
 		"gameStatus": gameState.GameStatus,
 		"mode": gameState.Mode,
 		"maxTries": gameState.MaxTries,
+		"wordSize": gameState.WordSize,
 		"updatedAt": gameState.UpdatedAt,
 		"createdAt": gameState.CreatedAt,
 	})
@@ -151,17 +151,23 @@ func playGameState(context *gin.Context) {
 	
 	fmt.Printf("Game state updated with ID: %d\n", updatedGameState.ID)
 	
-	context.JSON(http.StatusOK, gin.H{
+	response := gin.H{
 		"message": "Game state updated successfully",
 		"id": updatedGameState.ID,
-		"targetWord": updatedGameState.TargetWord,
 		"tries": updatedGameState.Tries,
 		"gameStatus": updatedGameState.GameStatus,
 		"mode": updatedGameState.Mode,
 		"maxTries": updatedGameState.MaxTries,
+		"wordSize": updatedGameState.WordSize,
 		"updatedAt": updatedGameState.UpdatedAt,
 		"createdAt": updatedGameState.CreatedAt,
-	})
+	}
+	
+	if updatedGameState.GameStatus == "won" || updatedGameState.GameStatus == "lost" {
+		response["targetWord"] = updatedGameState.TargetWord
+	}
+	
+	context.JSON(http.StatusOK, response)
 }
 
 func leaveGameStateByID(context *gin.Context) {
@@ -216,12 +222,13 @@ func timeoutGameStateByID(context *gin.Context) {
 	}
 	
 	context.JSON(http.StatusOK, gin.H{
-		"message": "Game state status set tolost successfully",
+		"message": "Game state status set to lost successfully",
 		"id": updatedGameState.ID,
 		"targetWord": updatedGameState.TargetWord,
 		"gameStatus": updatedGameState.GameStatus,
 		"mode": updatedGameState.Mode,
 		"maxTries": updatedGameState.MaxTries,
+		"wordSize": updatedGameState.WordSize,
 		"updatedAt": updatedGameState.UpdatedAt,
 		"createdAt": updatedGameState.CreatedAt,
 	})

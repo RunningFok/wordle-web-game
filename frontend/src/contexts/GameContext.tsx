@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect, useRef } from 'react';
-import { GameState, CreateGameStateResponse, GuessResult } from '../types/core';
+import { GameState, CreateGameStateResponse, PlayGameStateResponse, GuessResult } from '../types/core';
 import { apiService, PlayGameStateError } from '../services/api';
 import { getRandomWord } from '../helpers/gameLogic';
 
@@ -74,23 +74,23 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
             clearInterval(timerRef.current);
             timerRef.current = null;
           }
-          setTimeout(() => {
+          setTimeout(async () => {
             if (gameState?.mode === 'speed' && gameState?.id && gameState?.gameStatus === 'playing') {
-              apiService.timeoutGameState(gameState.id)
-                .then(response => {
-                  setGameState(prev => prev ? ({
-                    ...prev,
-                    gameStatus: response.gameStatus,
-                    updatedAt: response.updatedAt,
-                  }) : null);
-                })
-                .catch(error => {
-                  console.error('Failed to set game state status to timeout on backend:', error);
-                  setGameState(prev => prev ? ({
-                    ...prev,
-                    gameStatus: 'timeout',
-                  }) : null);
-                });
+              try {
+                const response = await apiService.timeoutGameState(gameState.id);
+                setGameState(prev => prev ? ({
+                  ...prev,
+                  gameStatus: response.gameStatus,
+                  targetWord: response.targetWord,
+                  updatedAt: response.updatedAt,
+                }) : null);
+              } catch (error) {
+                console.error('Failed to set game state status to timeout on backend:', error);
+                setGameState(prev => prev ? ({
+                  ...prev,
+                  gameStatus: 'timeout',
+                }) : null);
+              }
             }
           }, 500);
           return 0;
@@ -274,7 +274,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           throw new Error('Game ID is required for API-based modes');
         }
 
-        const response: CreateGameStateResponse = await apiService.playGameState({
+        const response: PlayGameStateResponse = await apiService.playGameState({
           id: gameState.id,
           guessWord: guessWord,
         });
@@ -285,6 +285,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           gameStatus: response.gameStatus,
           currentGuessWord: '',
           updatedAt: response.updatedAt,
+          ...(response.targetWord && { targetWord: response.targetWord }),
         }) : null);
 
         resetTimer();

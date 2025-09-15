@@ -26,12 +26,11 @@ export interface GameState {
 export interface CreateGameStateResponse {
   message: string;
   id: number;
-  targetWord: string;
   tries: GuessResult[];
   gameStatus: 'playing' | 'won' | 'lost' | 'timeout';
   mode: string;
   maxTries: number;
-  wordSize?: number;
+  wordSize: number;
   updatedAt: string;
   createdAt: string;
 }
@@ -39,6 +38,32 @@ export interface CreateGameStateResponse {
 export interface PlayGameStateRequest {
   id: number;
   guessWord: string;
+}
+
+export interface PlayGameStateResponse {
+  message: string;
+  id: number;
+  tries: GuessResult[];
+  gameStatus: 'playing' | 'won' | 'lost' | 'timeout';
+  mode: string;
+  maxTries: number;
+  wordSize: number;
+  updatedAt: string;
+  createdAt: string;
+  targetWord?: string;
+}
+
+export interface GameLostResponse {
+  message: string;
+  id: number;
+  targetWord: string;
+  tries: GuessResult[];
+  gameStatus: 'lost' | 'timeout';
+  mode: string;
+  maxTries: number;
+  wordSize: number;
+  updatedAt: string;
+  createdAt: string;
 }
 
 export interface PlayGameStateErrorType {

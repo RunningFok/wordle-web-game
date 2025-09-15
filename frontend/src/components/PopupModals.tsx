@@ -195,7 +195,7 @@ export const GameFinishModal: React.FC<GameFinishModalProps> = ({
           {gameStatus === 'won' 
             ? `You guessed "${targetWord}" correctly!` 
             : gameStatus === 'timeout'
-            ? `You ran out of time!`
+            ? `You ran out of time! The word was "${targetWord}"`
             : `The word was "${targetWord}"`
           }
         </p>

@@ -1,4 +1,4 @@
-import { CreateGameStateResponse, GameState, PlayGameStateRequest, PlayGameStateErrorType } from '../types/core';
+import { CreateGameStateResponse, GameState, PlayGameStateRequest, PlayGameStateResponse, GameLostResponse, PlayGameStateErrorType } from '../types/core';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
@@ -61,8 +61,8 @@ class ApiService {
     });
   }
 
-  async playGameState(request: PlayGameStateRequest): Promise<CreateGameStateResponse> {
-    return this.makeRequest<CreateGameStateResponse>('/gamestates', {
+  async playGameState(request: PlayGameStateRequest): Promise<PlayGameStateResponse> {
+    return this.makeRequest<PlayGameStateResponse>('/gamestates', {
       method: 'PUT',
       body: JSON.stringify(request),
     });
@@ -74,8 +74,8 @@ class ApiService {
     });
   }
 
-  async timeoutGameState(id: number): Promise<CreateGameStateResponse> {
-    return this.makeRequest<CreateGameStateResponse>(`/gamestates/${id}/timeout`, {
+  async timeoutGameState(id: number): Promise<GameLostResponse> {
+    return this.makeRequest<GameLostResponse>(`/gamestates/${id}/timeout`, {
       method: 'PUT',
     });
   }
