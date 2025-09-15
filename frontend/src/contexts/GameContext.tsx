@@ -10,7 +10,6 @@ interface GameContextType {
   loading: boolean;
   error: string | null;
   showGame: boolean;
-  createNewGame: (mode: GameMode) => Promise<void>;
   createSpeedGame: (wordSize: number, maxTries: number, timeLimit: number) => Promise<void>;
   createClassicGame: (wordSize: number, maxTries: number) => Promise<void>;
   makeGuess: (guessWord: string) => Promise<void>;
@@ -124,51 +123,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     };
   }, [gameState?.mode, gameState?.gameStatus, startTimer, stopTimer]);
 
-  const createNewGame = useCallback(async (mode: GameMode) => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      if (mode === 'classic') {
-        const newGameState: GameState = {
-          currentGuessWord: '',
-          tries: [],
-          gameStatus: 'playing',
-          targetWord: getRandomWord(),
-          maxTries: 6,
-          wordSize: 5,
-          mode: 'classic'
-        };
-        setGameState(newGameState);
-        
-      } else if (mode === 'speed') {
-        const response: CreateGameStateResponse = await apiService.createGameState();
-        
-        const newGameState: GameState = {
-          id: response.id,
-          currentGuessWord: '',
-          tries: response.tries,
-          gameStatus: response.gameStatus,
-          targetWord: response.targetWord,
-          maxTries: response.maxTries,
-          wordSize: response.wordSize || 5,
-          mode: 'speed',
-          timeLimit: 45,
-          createdAt: response.createdAt,
-          updatedAt: response.updatedAt,
-        };
-        setGameState(newGameState);
-      }
-      
-      setShowGame(true);
-      
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create new game');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   const createSpeedGame = useCallback(async (wordSize: number, maxTries: number, timeLimit: number) => {
     setLoading(true);
     setError(null);
@@ -181,7 +135,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         currentGuessWord: '',
         tries: response.tries,
         gameStatus: response.gameStatus,
-        targetWord: response.targetWord,
         maxTries: response.maxTries,
         wordSize: response.wordSize || wordSize,
         mode: 'speed',
@@ -334,7 +287,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     loading,
     error,
     showGame,
-    createNewGame,
     createSpeedGame,
     createClassicGame,
     makeGuess,
